@@ -59,6 +59,11 @@ public class UnitController : MonoBehaviour
         {
             SpawnEnemies(3);
         }
+
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            ResetPlayerUnitPos();
+        }
         
        
     }
@@ -76,7 +81,7 @@ public class UnitController : MonoBehaviour
         Unit unit = Instantiate(unitObjects[0],KingController.Instance.transform).GetComponent<Unit>();
         unit.transform.tag = "PlayerUnit"; 
         unit.isAlly = true;
-        unit.PlacePlayerUnit();
+        unit.PlacePlayerUnit(activePlayerUnits.Count);
         activePlayerUnits.Add(unit);
     }
 
@@ -105,6 +110,13 @@ public class UnitController : MonoBehaviour
         }
     }
 
+    private void ResetPlayerUnitPos()
+    {
+       for(int i = 0; i < activePlayerUnits.Count; i++)
+        {
+            activePlayerUnits[i].PlacePlayerUnit(i);
+        }
+    }
     
     public Vector2 getRandomSpawnPoint()
     {

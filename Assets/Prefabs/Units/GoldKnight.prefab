@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2149024030993380469}
   - component: {fileID: 2562332453069574284}
   m_Layer: 0
-  m_Name: Knight
+  m_Name: GoldKnight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -79,10 +79,11 @@ MonoBehaviour:
   currentHealth: 0
   moveSpeed: 3
   attackDamage: 10
-  attackRange: 1.2
-  attackCooldown: 1.5
+  attackRange: 1
+  attackCooldown: 1.2
   isAlly: 0
   UnitType: 2
+  rangedUnit: 0
 --- !u!61 &2149024030993380469
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -164,7 +165,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.4
+  m_Radius: 1
 --- !u!1 &5052187607452794294
 GameObject:
   m_ObjectHideFlags: 0
@@ -247,7 +248,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 0.65515965, b: 0.24056602, a: 1}
+  m_Color: {r: 0.8962264, g: 0.8785265, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

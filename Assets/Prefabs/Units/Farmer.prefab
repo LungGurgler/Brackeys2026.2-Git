@@ -144,7 +144,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.4
+  m_Radius: 1
 --- !u!114 &3084212646083938964
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -161,10 +161,11 @@ MonoBehaviour:
   currentHealth: 0
   moveSpeed: 5
   attackDamage: 2
-  attackRange: 0.25
-  attackCooldown: 1.15
+  attackRange: 1
+  attackCooldown: 0.5
   isAlly: 0
   UnitType: 0
+  rangedUnit: 0
 --- !u!1 &5716715281156215756
 GameObject:
   m_ObjectHideFlags: 0
@@ -247,7 +248,7 @@ SpriteRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 0.89323026, b: 0.495283, a: 1}
+  m_Color: {r: 1, g: 0.65009755, b: 0.2783019, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

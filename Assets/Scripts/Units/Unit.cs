@@ -44,10 +44,12 @@ public class Unit : MonoBehaviour
     [SerializeField]
     private UnitType UnitType; 
     public UnitType unitType { get { return UnitType; } }
-
+    [SerializeField]
+    bool rangedUnit; 
    
 
     CircleCollider2D hitRadius;
+    BoxCollider2D hitCollider; 
 
     private Transform currentTarget;
     List<Transform> validTargets = new List<Transform>(); 
@@ -57,6 +59,7 @@ public class Unit : MonoBehaviour
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
         hitRadius = gameObject.GetComponent<CircleCollider2D>();
+        hitCollider = gameObject.GetComponent<BoxCollider2D>();
         currentHealth = MaximumHealth; 
     }
 
@@ -86,25 +89,24 @@ public class Unit : MonoBehaviour
             currentTarget = null; 
         }
 
-        
+        if (rangedUnit)
+        {
             if (attackReady && currentTarget != null)
             {
-                 attackReady = false; 
-                 UnitAttack();
-                 StartCoroutine(StartAttackCooldown()); 
+                attackReady = false;
+                UnitAttack();
+                StartCoroutine(StartAttackCooldown());
+            }
         }
 
-        }
+    }
 
     private void FixedUpdate()
     {
 
         if (isAlly)
         {
-            if ((Vector2)transform.position != KingController.Instance.kingPosition + positionOffset)
-            {
-                rb.linearVelocity = (KingController.Instance.kingPosition + positionOffset - (Vector2)transform.position) * moveSpeed * 5f;
-            }
+            ProcessAllyMovement();
         }
         else
         {
@@ -126,6 +128,25 @@ public class Unit : MonoBehaviour
         }
     }
 
+    private void ProcessAllyMovement()
+    {
+        if (currentTarget != null && !(unitType == UnitType.Mortar || unitType == UnitType.Archer || unitType == UnitType.Wizard)) //checks if there is a target (melee only) 
+        {
+            if (Vector2.Distance(currentTarget.position, transform.position) < DistanceToKing()) //checks if the target is closer than the king 
+            {
+                rb.linearVelocity = (currentTarget.position - transform.position) * moveSpeed * Time.deltaTime * 5f; //moves to the target if so
+            }
+            else
+            {
+                rb.linearVelocity = (KingController.Instance.kingPosition + positionOffset - (Vector2)transform.position) * moveSpeed * 5f;
+            }
+
+        }
+        else
+        { 
+            rb.linearVelocity = (KingController.Instance.kingPosition + positionOffset - (Vector2)transform.position) * moveSpeed * 5f;
+        }
+    }
 
     private void UnitAttack()
     {
@@ -151,8 +172,8 @@ public class Unit : MonoBehaviour
 
             case UnitType.Wizard:
 
-
-                print("BLAMMO!"); 
+                
+                Debug.DrawRay(transform.position, currentTarget.position - transform.position, Color.green, 0.25f);
                 foreach (RaycastHit2D hitInfo in Physics2D.RaycastAll(transform.position, currentTarget.position - transform.position, 5f))
                 {
                     if(hitInfo.collider.tag == "King")
@@ -176,10 +197,7 @@ public class Unit : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        if(unitType == UnitType.Archer)
-        {
-            print("Took " + damage + " damage");
-        }
+        
         currentHealth -= damage;
         if (currentHealth <= 0)
         {
@@ -197,10 +215,7 @@ public class Unit : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.transform == transform)
-        {
-            return; 
-        }
+     
         if (isAlly)
         {
             if (collision.tag == "EnemyUnit")
@@ -254,6 +269,42 @@ public class Unit : MonoBehaviour
         }
     }
 
+    //===============================
+    //  ATTACKS FOR MELEE UNITS ONLY 
+    //===============================
+
+
+    private void OnCollisionStay2D(Collision2D collision)   
+    {
+        print("ATTACKING");
+        if (attackReady && !rangedUnit)
+        {
+           
+            if (isAlly)
+            {
+                if (collision.transform == currentTarget)
+                {
+                    currentTarget.GetComponent<Unit>().TakeDamage(attackDamage); 
+                }
+            }
+            else
+            {
+                if(collision.transform == currentTarget)
+                {
+                    if(collision.transform.tag == "King")
+                    {
+                        KingController.Instance.TakeDamage(attackDamage);
+                    }
+                    else
+                    {
+                       currentTarget.GetComponent<Unit>().TakeDamage(attackDamage);
+                    }
+                }
+            }
+        }
+    }
+
+
     private void Die()
     {
         validTargets.Clear(); 
@@ -267,11 +318,11 @@ public class Unit : MonoBehaviour
     }
 
 
-    public void PlacePlayerUnit()
+    public void PlacePlayerUnit(int index)
     {
-        int count = UnitController.Instance.getAllyCount();
-        Quaternion rotation = Quaternion.AngleAxis(15f * Mathf.Floor(count / 8), Vector3.forward);
-        positionOffset = rotation * ((1f + 0.35f * Mathf.Floor(count / 8)) * CardinalVector(UnitController.Instance.getAllyCount() % 8)) ;
+        
+        Quaternion rotation = Quaternion.AngleAxis(15f * Mathf.Floor(index / 8), Vector3.forward);
+        positionOffset = rotation * ((1f + 0.35f * Mathf.Floor(index / 8)) * CardinalVector(index % 8));
         transform.position = KingController.Instance.kingPosition + positionOffset;
     }
 
@@ -313,7 +364,7 @@ public class Unit : MonoBehaviour
 
 
 
-
+    
 
 
     //if (isAlly)
