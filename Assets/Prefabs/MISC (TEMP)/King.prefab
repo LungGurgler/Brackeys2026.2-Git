@@ -81,12 +81,12 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  m_Sprite: {fileID: -4821530343430527414, guid: 8ffb3c971a952ce4faffcc7daa328d39, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 1.13, y: 1.81}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -101,9 +101,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1804398900074814937}
-  - component: {fileID: 3279800678344239456}
   - component: {fileID: 3680935062729122561}
   - component: {fileID: 7763484691845010447}
+  - component: {fileID: 5512052825777868471}
   m_Layer: 0
   m_Name: King
   m_TagString: King
@@ -127,22 +127,6 @@ Transform:
   - {fileID: 5612209034586365310}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3279800678344239456
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7175324109487778199}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3546a1802b2b6546bae77ec22d8403c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::KingController
-  rb: {fileID: 0}
-  maxHealth: 0
-  moveSpeed: 7.5
-  orbit: {fileID: 0}
 --- !u!50 &3680935062729122561
 Rigidbody2D:
   serializedVersion: 5
@@ -214,5 +198,21 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.5, y: 0.5}
+  m_Size: {x: 0.5, y: 0.85}
   m_EdgeRadius: 0
+--- !u!114 &5512052825777868471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7175324109487778199}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 756c7e7138598ef40a3ffcdc0681e3fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::KingController
+  rb: {fileID: 0}
+  maxHealth: 0
+  moveSpeed: 7.5
+  orbit: {fileID: 0}
