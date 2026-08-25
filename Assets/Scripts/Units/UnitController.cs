@@ -53,7 +53,7 @@ public class UnitController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.J))
         {
-            GameObject unit = UnitLib.getUnit(UnitType.Farmer);
+            GameObject unit = UnitLib.getUnit(UnitType.Knight);
             spawnPlayerUnit(unit);
         }
         if (Input.GetKeyDown(KeyCode.U))
