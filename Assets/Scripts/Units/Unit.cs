@@ -7,13 +7,13 @@ using UnityEngine.Rendering;
 
 public enum UnitType
 {
-    Farmer,
-    Swordsman,
-    Knight,
-    Golem,
-    Archer,
-    Wizard, 
-    Mortar
+    Farmer = 0,
+    Knight = 1,
+    GoldKnight = 2,
+    Golem = 3,
+    Archer = 4,
+    Wizard = 5, 
+    Catapult = 6
 }
 
 public class Unit : MonoBehaviour
@@ -113,7 +113,7 @@ public class Unit : MonoBehaviour
 
             if (validTargets.Count > 0)
             {
-                if (unitType == UnitType.Mortar || unitType == UnitType.Archer || unitType == UnitType.Wizard)
+                if (unitType == UnitType.Catapult || unitType == UnitType.Archer || unitType == UnitType.Wizard)
                 {
                     rb.linearVelocity = Vector2.zero;  
                 } else
@@ -130,7 +130,7 @@ public class Unit : MonoBehaviour
 
     private void ProcessAllyMovement()
     {
-        if (currentTarget != null && !(unitType == UnitType.Mortar || unitType == UnitType.Archer || unitType == UnitType.Wizard)) //checks if there is a target (melee only) 
+        if (currentTarget != null && !(unitType == UnitType.Catapult || unitType == UnitType.Archer || unitType == UnitType.Wizard)) //checks if there is a target (melee only) 
         {
             if (Vector2.Distance(currentTarget.position, transform.position) < DistanceToKing()) //checks if the target is closer than the king 
             {
@@ -154,8 +154,8 @@ public class Unit : MonoBehaviour
         switch (unitType)
         {
             case UnitType.Farmer:
-            case UnitType.Swordsman: 
-            case UnitType.Knight:
+            case UnitType.Knight: 
+            case UnitType.GoldKnight:
             case UnitType.Golem:
             case UnitType.Archer:
                
@@ -186,7 +186,7 @@ public class Unit : MonoBehaviour
                     }
                 }
                 break;
-            case UnitType.Mortar:
+            case UnitType.Catapult:
                 break;
             default:
                 break;

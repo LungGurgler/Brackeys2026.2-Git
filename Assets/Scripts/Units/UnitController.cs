@@ -16,7 +16,7 @@ public class UnitController : MonoBehaviour
     private Dictionary<UnitType, int> UnitsToSpawn = new() //stores the additional units to be spawned next round 
     {
         [UnitType.Farmer] = 0,
-        [UnitType.Knight] = 0,
+        [UnitType.GoldKnight] = 0,
         [UnitType.Archer] = 0,
         [UnitType.Wizard] = 0,
         [UnitType.Golem] = 0,
@@ -53,7 +53,12 @@ public class UnitController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.J))
         {
-            spawnPlayerUnit();
+            GameObject unit = UnitLib.getUnit(UnitType.Farmer);
+            spawnPlayerUnit(unit);
+        }
+        if (Input.GetKeyDown(KeyCode.U))
+        {
+            SpawnPlayerUnits(5,UnitType.Farmer);
         }
         if (Input.GetKeyDown(KeyCode.L))
         {
@@ -75,10 +80,19 @@ public class UnitController : MonoBehaviour
         activePlayerUnits.Remove(unit); 
     }
     
-    public void spawnPlayerUnit()
+    public void SpawnPlayerUnits(int count, UnitType unitType)
+    {
+        GameObject spawnUnit = UnitLib.getUnit(unitType); 
+        for (int i = 0; i < count; i++)
+        {
+            spawnPlayerUnit(spawnUnit); 
+        }
+    }
+
+    public void spawnPlayerUnit(GameObject spawnUnit)
     {
        
-        Unit unit = Instantiate(unitObjects[0],KingController.Instance.transform).GetComponent<Unit>();
+        Unit unit = Instantiate(spawnUnit,KingController.Instance.transform).GetComponent<Unit>();
         unit.transform.tag = "PlayerUnit"; 
         unit.isAlly = true;
         unit.PlacePlayerUnit(activePlayerUnits.Count);
