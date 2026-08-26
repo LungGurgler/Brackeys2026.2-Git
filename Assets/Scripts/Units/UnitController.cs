@@ -16,20 +16,22 @@ public class UnitController : MonoBehaviour
     private Dictionary<UnitType, int> UnitsToSpawn = new() //stores the additional units to be spawned next round 
     {
         [UnitType.Farmer] = 0,
+        [UnitType.Knight] = 0, 
         [UnitType.GoldKnight] = 0,
         [UnitType.Archer] = 0,
         [UnitType.Wizard] = 0,
         [UnitType.Golem] = 0,
+       
     };
 
     [SerializeField]
     private GameObject[] unitObjects;
 
     [SerializeField]
-    private Transform[] enemySpawnPoints; 
+    private Transform[] enemySpawnPoints;
 
 
-
+    public int playerUnitsDead { get; private set; } = 0;  
    
 
     [SerializeField]
@@ -53,12 +55,12 @@ public class UnitController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.J))
         {
-            GameObject unit = UnitLib.getUnit(UnitType.Knight);
+            GameObject unit = UnitLib.getUnit(UnitType.Archer);
             spawnPlayerUnit(unit);
         }
         if (Input.GetKeyDown(KeyCode.U))
         {
-            SpawnPlayerUnits(5,UnitType.Farmer);
+            SpawnPlayerUnits(5,UnitType.Archer);
         }
         if (Input.GetKeyDown(KeyCode.L))
         {
@@ -69,14 +71,17 @@ public class UnitController : MonoBehaviour
         {
             ResetPlayerUnitPos();
         }
-        
-       
+
+
     }
 
+
+    
     public void RemovePlayerUnit(Unit unit)
     {
         //UnitsToSpawn[unit.unitType]++;
         //UnitsToSpawn[unit.unitType] = (int) Mathf.Clamp(UnitsToSpawn[unit.unitType], 0, Mathf.Infinity);
+        playerUnitsDead++; 
         activePlayerUnits.Remove(unit); 
     }
     

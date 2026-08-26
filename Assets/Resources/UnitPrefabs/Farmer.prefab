@@ -157,12 +157,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffc07ad4ffcb89b479aa9ad8561954b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Unit
-  MaximumHealth: 10
+  baseMaximumHealth: 10
   currentHealth: 0
-  moveSpeed: 5
-  attackDamage: 2
-  attackRange: 1.75
-  attackCooldown: 0.5
+  baseMoveSpeed: 5
+  baseAttackDamage: 2
+  attackRange: 2
+  baseAttackCooldown: 0.75
   isAlly: 0
   UnitType: 0
   rangedUnit: 0

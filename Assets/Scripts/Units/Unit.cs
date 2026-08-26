@@ -13,33 +13,38 @@ public enum UnitType
     Golem = 3,
     Archer = 4,
     Wizard = 5, 
-    Catapult = 6
+    Catapult = 6,
+    ALL = 7 //For debuff purposes
 }
 
 public class Unit : MonoBehaviour
 {
 
     [Header("Unit Stats")]
-    [SerializeField] private float MaximumHealth;
+    [SerializeField] private float baseMaximumHealth;
+    private float MaximumHealth { get { if (isAlly) { return baseMaximumHealth -= UnitTrustManager.Instance.GetPlayerHealth(unitType); } else { return baseMaximumHealth; } } }
     public float currentHealth;
     [SerializeField]
-    private float moveSpeed = 4f;
+    private float baseMoveSpeed = 4f;
+    private float moveSpeed { get { if (isAlly) { return baseMoveSpeed *= UnitTrustManager.Instance.GetPlayerMoveSpeed(unitType); } else { return baseMoveSpeed; } } }
     [SerializeField]
-    private float attackDamage = 4f;
+    private float baseAttackDamage = 4f;
+    private float attackDamage { get { if (isAlly) { return Mathf.Clamp(baseAttackDamage -= UnitTrustManager.Instance.GetPlayerDamage(unitType),1,Mathf.Infinity); } else { return baseAttackDamage += UnitTrustManager.Instance.GetEnemyUnitDamage(UnitType); } } }
     [SerializeField]
     private float attackRange = 1f; 
     [SerializeField]
-    private float attackCooldown = 1f;
+    private float baseAttackCooldown = 1f;
+    private float attackCooldown { get { if (isAlly) { return baseAttackCooldown *= UnitTrustManager.Instance.GetPlayerAttackSpeed(unitType); } else { return baseAttackCooldown; } } }
     private bool attackReady = true;
 
 
 
-
+    private Animator anim; 
     private Rigidbody2D rb;
 
     public bool isAlly;
     private Vector2 positionOffset;
-
+    Sprite sprite; 
    
     [SerializeField]
     private UnitType UnitType; 
@@ -75,11 +80,15 @@ public class Unit : MonoBehaviour
         {
             currentTarget = KingController.Instance.transform; 
         }
+
+        print(attackDamage);
+        print(attackCooldown); 
+       
     }
 
     private void Update()
     {
-        
+       
         if(validTargets.Count > 0)
         {
             currentTarget = validTargets[0].transform;
@@ -94,7 +103,7 @@ public class Unit : MonoBehaviour
             if (attackReady && currentTarget != null)
             {
                 attackReady = false;
-                UnitAttack();
+                RangedUnitAttack();
                 StartCoroutine(StartAttackCooldown());
             }
         }
@@ -148,17 +157,13 @@ public class Unit : MonoBehaviour
         }
     }
 
-    private void UnitAttack()
+    private void RangedUnitAttack()
     {
 
         switch (unitType)
         {
-            case UnitType.Farmer:
-            case UnitType.Knight:
-            case UnitType.GoldKnight:
-            case UnitType.Golem:
             case UnitType.Archer:
-
+                Debug.DrawLine(transform.position, currentTarget.position, Color.red, 0.3f);
                 if (currentTarget.tag == "King")
                 {
                     KingController.Instance.TakeDamage(attackDamage);
@@ -176,18 +181,28 @@ public class Unit : MonoBehaviour
                 Debug.DrawRay(transform.position, currentTarget.position - transform.position, Color.green, 0.25f);
                 foreach (RaycastHit2D hitInfo in Physics2D.RaycastAll(transform.position, currentTarget.position - transform.position, 5f))
                 {
+
                     if(hitInfo.collider is CircleCollider2D)
                     {
                         continue;
                     }
-
-                    if (hitInfo.collider.tag == "King")
+                    if (isAlly)
                     {
-                        KingController.Instance.TakeDamage(attackDamage);
+                        if (hitInfo.transform.tag == "EnemyUnit")
+                        {
+                            hitInfo.collider.GetComponent<Unit>().TakeDamage(attackDamage);
+                        }
                     }
-                    else if (hitInfo.collider.tag == "PlayerUnit")
+                    else
                     {
-                        hitInfo.collider.GetComponent<Unit>().TakeDamage(attackDamage);
+                        if (hitInfo.collider.tag == "King")
+                        {
+                            KingController.Instance.TakeDamage(attackDamage);
+                        }
+                        else if (hitInfo.collider.tag == "PlayerUnit")
+                        {
+                            hitInfo.collider.GetComponent<Unit>().TakeDamage(attackDamage);
+                        }
                     }
                 }
                 break;
