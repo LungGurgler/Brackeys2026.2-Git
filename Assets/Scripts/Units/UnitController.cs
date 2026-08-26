@@ -75,8 +75,8 @@ public class UnitController : MonoBehaviour
 
     public void RemovePlayerUnit(Unit unit)
     {
-        UnitsToSpawn[unit.unitType]++;
-        UnitsToSpawn[unit.unitType] = (int) Mathf.Clamp(UnitsToSpawn[unit.unitType], 0, Mathf.Infinity);
+        //UnitsToSpawn[unit.unitType]++;
+        //UnitsToSpawn[unit.unitType] = (int) Mathf.Clamp(UnitsToSpawn[unit.unitType], 0, Mathf.Infinity);
         activePlayerUnits.Remove(unit); 
     }
     

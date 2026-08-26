@@ -150,43 +150,70 @@ public class Unit : MonoBehaviour
 
     private void UnitAttack()
     {
-        
+
         switch (unitType)
         {
             case UnitType.Farmer:
-            case UnitType.Knight: 
+            case UnitType.Knight:
             case UnitType.GoldKnight:
             case UnitType.Golem:
             case UnitType.Archer:
-               
+
                 if (currentTarget.tag == "King")
                 {
                     KingController.Instance.TakeDamage(attackDamage);
                 }
                 else
                 {
-                    currentTarget.GetComponent<Unit>().TakeDamage(attackDamage); 
+                    currentTarget.GetComponent<Unit>().TakeDamage(attackDamage);
                 }
-                    break;
-            
+                break;
+
 
             case UnitType.Wizard:
 
-                
+
                 Debug.DrawRay(transform.position, currentTarget.position - transform.position, Color.green, 0.25f);
                 foreach (RaycastHit2D hitInfo in Physics2D.RaycastAll(transform.position, currentTarget.position - transform.position, 5f))
                 {
-                    if(hitInfo.collider.tag == "King")
+                    if(hitInfo.collider is CircleCollider2D)
+                    {
+                        continue;
+                    }
+
+                    if (hitInfo.collider.tag == "King")
                     {
                         KingController.Instance.TakeDamage(attackDamage);
                     }
-                    else if(hitInfo.collider.tag == "PlayerUnit") 
+                    else if (hitInfo.collider.tag == "PlayerUnit")
                     {
                         hitInfo.collider.GetComponent<Unit>().TakeDamage(attackDamage);
                     }
                 }
                 break;
             case UnitType.Catapult:
+
+                foreach (Collider2D collision in Physics2D.OverlapCircleAll(currentTarget.position, 1f))
+                {
+                    if (isAlly)
+                    {
+                        if(collision.tag == "EnemyUnit")
+                        {
+                            collision.GetComponent<Unit>().TakeDamage(attackDamage);
+                        }
+                    }
+                    else
+                    {
+                        if(collision.tag == "PlayerUnit")
+                        {
+                            collision.GetComponent<Unit>().TakeDamage(attackDamage);
+                        } 
+                        else if(collision.tag == "King")
+                        {
+                            KingController.Instance.TakeDamage(attackDamage); 
+                        }
+                    }
+                }
                 break;
             default:
                 break;
@@ -197,7 +224,6 @@ public class Unit : MonoBehaviour
 
     public void TakeDamage(float damage)
     {
-        
         currentHealth -= damage;
         if (currentHealth <= 0)
         {
@@ -276,7 +302,7 @@ public class Unit : MonoBehaviour
 
     private void OnCollisionStay2D(Collision2D collision)   
     {
-        print("ATTACKING");
+        
         if (attackReady && !rangedUnit)
         {
            
@@ -301,6 +327,8 @@ public class Unit : MonoBehaviour
                     }
                 }
             }
+            attackReady = false;
+            StartCoroutine(StartAttackCooldown());
         }
     }
 

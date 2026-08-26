@@ -79,8 +79,8 @@ MonoBehaviour:
   currentHealth: 0
   moveSpeed: 3
   attackDamage: 10
-  attackRange: 1
-  attackCooldown: 1.2
+  attackRange: 1.75
+  attackCooldown: 0.75
   isAlly: 0
   UnitType: 2
   rangedUnit: 0

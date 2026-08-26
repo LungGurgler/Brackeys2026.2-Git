@@ -170,9 +170,9 @@ MonoBehaviour:
   MaximumHealth: 20
   currentHealth: 0
   moveSpeed: 4
-  attackDamage: 6.5
+  attackDamage: 8.5
   attackRange: 2.5
-  attackCooldown: 1.3
+  attackCooldown: 1
   isAlly: 0
   UnitType: 5
   rangedUnit: 1

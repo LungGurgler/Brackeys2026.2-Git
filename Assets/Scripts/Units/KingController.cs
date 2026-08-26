@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class KingController : MonoBehaviour
@@ -53,7 +54,7 @@ public class KingController : MonoBehaviour
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
-        print("King took " + damage + " damage");
+        //StartCoroutine(StartCameraShake()); 
         currentHealth = Mathf.Clamp(currentHealth,0,maxHealth);
         if(currentHealth <= 0)
         {
@@ -66,5 +67,20 @@ public class KingController : MonoBehaviour
     {
         currentHealth = maxHealth; 
     }
+
+    private IEnumerator StartCameraShake()
+    {
+        Camera cam = Camera.main;
+        Vector2 pos = cam.transform.position;
+        float elapsedTime = 0f; 
+        while(elapsedTime < 0.25)
+        {
+            elapsedTime += Time.deltaTime;
+            cam.transform.position = pos + Random.insideUnitCircle * 0.15f; 
+            yield return new WaitForEndOfFrame();
+        }
+        cam.transform.position = pos; 
+    }
+
 
 }
