@@ -86,6 +86,7 @@ MonoBehaviour:
   isAlly: 0
   UnitType: 2
   rangedUnit: 0
+  simpleFlash: {fileID: 7435343090130242645}
 --- !u!61 &2149024030993380469
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -200,6 +201,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6508149015419552378}
   - component: {fileID: 6960244587134056250}
+  - component: {fileID: 7435343090130242645}
   m_Layer: 0
   m_Name: Square
   m_TagString: Untagged
@@ -282,3 +284,17 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!114 &7435343090130242645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5052187607452794294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d0672e503abca5408f8a694543266ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BarthaSzabolcs.Tutorial_SpriteFlash.SimpleFlash
+  flashMaterial: {fileID: 2100000, guid: c26478dcb291b54499768c8a30104330, type: 2}
+  duration: 0.2

@@ -4,6 +4,7 @@ using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
+using BarthaSzabolcs.Tutorial_SpriteFlash;
 
 public enum UnitType
 {
@@ -58,6 +59,9 @@ public class Unit : MonoBehaviour
 
     private Transform currentTarget;
     List<Transform> validTargets = new List<Transform>();
+
+    // [SerializeField] private SimpleFlash simpleFlash;
+    [SerializeField] private SimpleFlash simpleFlash;
 
 
     private void Awake()
@@ -249,6 +253,9 @@ public class Unit : MonoBehaviour
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
+        if (simpleFlash)
+            simpleFlash.Flash();
+        
         if (currentHealth <= 0)
         {
             Die();

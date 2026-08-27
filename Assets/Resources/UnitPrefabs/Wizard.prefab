@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2923184824379023811}
   - component: {fileID: 5736409632254892728}
+  - component: {fileID: 7325091138997263885}
   m_Layer: 0
   m_Name: Square
   m_TagString: Untagged
@@ -92,6 +93,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!114 &7325091138997263885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 345892300726442922}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d0672e503abca5408f8a694543266ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BarthaSzabolcs.Tutorial_SpriteFlash.SimpleFlash
+  flashMaterial: {fileID: 2100000, guid: c26478dcb291b54499768c8a30104330, type: 2}
+  duration: 0.2
 --- !u!1 &2430407503465587989
 GameObject:
   m_ObjectHideFlags: 0
@@ -173,9 +188,11 @@ MonoBehaviour:
   baseAttackDamage: 4.5
   attackRange: 2.5
   baseAttackCooldown: 1.25
+  anim: {fileID: 0}
   isAlly: 0
   UnitType: 5
   rangedUnit: 1
+  simpleFlash: {fileID: 7325091138997263885}
 --- !u!61 &6731205026309086424
 BoxCollider2D:
   m_ObjectHideFlags: 0
