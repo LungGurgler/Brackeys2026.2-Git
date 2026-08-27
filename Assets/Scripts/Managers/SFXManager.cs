@@ -20,7 +20,7 @@ public class SoundManager : MonoBehaviour
             Instance = this;
         }
 
-        DontDestroyOnLoad(gameObject); //Keeps it persistant between scenes
+        DontDestroyOnLoad(gameObject);
     }
 
 
