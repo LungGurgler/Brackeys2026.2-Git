@@ -22,19 +22,19 @@ public class Unit : MonoBehaviour
 
     [Header("Unit Stats")]
     [SerializeField] private float baseMaximumHealth;
-    private float MaximumHealth { get { if (isAlly) { return baseMaximumHealth -= UnitTrustManager.Instance.GetPlayerHealth(unitType); } else { return baseMaximumHealth; } } }
+    private float MaximumHealth { get { if (isAlly) { return baseMaximumHealth - UnitTrustManager.Instance.GetPlayerHealth(unitType); } else { return baseMaximumHealth; } } }
     public float currentHealth;
     [SerializeField]
     private float baseMoveSpeed = 4f;
-    private float moveSpeed { get { if (isAlly) { return baseMoveSpeed *= UnitTrustManager.Instance.GetPlayerMoveSpeed(unitType); } else { return baseMoveSpeed; } } }
+    private float moveSpeed { get { if (isAlly) { return baseMoveSpeed * UnitTrustManager.Instance.GetPlayerMoveSpeed(unitType); } else { return baseMoveSpeed; } } }
     [SerializeField]
     private float baseAttackDamage = 4f;
-    private float attackDamage { get { if (isAlly) { return Mathf.Clamp(baseAttackDamage -= UnitTrustManager.Instance.GetPlayerDamage(unitType),1,Mathf.Infinity); } else { return baseAttackDamage += UnitTrustManager.Instance.GetEnemyUnitDamage(UnitType); } } }
+    private float attackDamage { get { if (isAlly) { return Mathf.Clamp(baseAttackDamage - UnitTrustManager.Instance.GetPlayerDamage(unitType),1,Mathf.Infinity); } else { return baseAttackDamage + UnitTrustManager.Instance.GetEnemyUnitDamage(UnitType); } } }
     [SerializeField]
     private float attackRange = 1f; 
     [SerializeField]
     private float baseAttackCooldown = 1f;
-    private float attackCooldown { get { if (isAlly) { return baseAttackCooldown *= UnitTrustManager.Instance.GetPlayerAttackSpeed(unitType); } else { return baseAttackCooldown; } } }
+    private float attackCooldown { get { if (isAlly) { return baseAttackCooldown * UnitTrustManager.Instance.GetPlayerAttackSpeed(unitType); } else { return baseAttackCooldown; } } }
     private bool attackReady = true;
 
 
@@ -66,6 +66,7 @@ public class Unit : MonoBehaviour
         hitRadius = gameObject.GetComponent<CircleCollider2D>();
         hitCollider = gameObject.GetComponent<BoxCollider2D>();
         currentHealth = MaximumHealth; 
+        
     }
 
 
@@ -78,11 +79,10 @@ public class Unit : MonoBehaviour
 
         if (isAlly)
         {
-            currentTarget = KingController.Instance.transform; 
+            currentTarget = KingController.Instance.transform;
+
         }
 
-        print(attackDamage);
-        print(attackCooldown); 
        
     }
 
@@ -320,30 +320,41 @@ public class Unit : MonoBehaviour
         
         if (attackReady && !rangedUnit)
         {
-           
+               
             if (isAlly)
             {
                 if (collision.transform == currentTarget)
                 {
-                    currentTarget.GetComponent<Unit>().TakeDamage(attackDamage); 
+                    currentTarget.GetComponent<Unit>().TakeDamage(attackDamage);
+                    attackReady = false;
+                    StartCoroutine(StartAttackCooldown());
                 }
             }
             else
             {
-                if(collision.transform == currentTarget)
+                if(collision.transform == currentTarget || (collision.transform.tag == "King" || collision.transform.tag == "PlayerUnit"))
                 {
                     if(collision.transform.tag == "King")
                     {
                         KingController.Instance.TakeDamage(attackDamage);
+
                     }
                     else
                     {
-                       currentTarget.GetComponent<Unit>().TakeDamage(attackDamage);
+                        if (collision.transform != currentTarget)
+                        {
+                            collision.transform.GetComponent<Unit>().TakeDamage(attackDamage);
+                        }
+                        else
+                        {
+                            currentTarget.GetComponent<Unit>().TakeDamage(attackDamage);
+                        }
                     }
+                    attackReady = false;
+                    StartCoroutine(StartAttackCooldown());
                 }
             }
-            attackReady = false;
-            StartCoroutine(StartAttackCooldown());
+          
         }
     }
 
@@ -353,10 +364,14 @@ public class Unit : MonoBehaviour
         validTargets.Clear(); 
         if (isAlly)
         {
-            UnitController.Instance.RemovePlayerUnit(this); 
+            UnitController.Instance.RemovePlayerUnit(this);
+        }
+        else
+        {
+            UnitController.Instance.RemoveEnemyUnit(this);
         }
 
-        Destroy(gameObject);
+            Destroy(gameObject);
 
     }
 
@@ -398,6 +413,12 @@ public class Unit : MonoBehaviour
     }
 
     
+    public void SetTraitor()
+    {
+        baseAttackDamage /= 2;
+        baseMaximumHealth /= 2; 
+        
+    }
 
 
     private float DistanceToKing()

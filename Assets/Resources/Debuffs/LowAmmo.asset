@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71aa8239eb3d8dc4fa06d77f7f837c29, type: 3}
   m_Name: LowAmmo
   m_EditorClassIdentifier: Assembly-CSharp::TrustDebuff
-  debuffName: LowAmmo
+  description: Allied Archers shoot 10% slower
   targetUnit: 4
   targetValue: 1
   value: 10
-  debuffSprite: {fileID: 0}
+  debuffSprite: {fileID: 2754714448023484493, guid: 10deed827dc7a894b99798b9e9055c1f, type: 3}

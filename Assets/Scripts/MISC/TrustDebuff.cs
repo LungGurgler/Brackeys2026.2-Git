@@ -14,8 +14,7 @@ public class TrustDebuff : ScriptableObject
 {
 
 
-
-    public string debuffName; 
+    public string description; 
     public UnitType targetUnit;
     public Values targetValue; 
     public float value;

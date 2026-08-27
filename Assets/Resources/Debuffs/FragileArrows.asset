@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71aa8239eb3d8dc4fa06d77f7f837c29, type: 3}
   m_Name: FragileArrows
   m_EditorClassIdentifier: Assembly-CSharp::TrustDebuff
-  debuffName: Fragile arrows
+  description: 'Allied Archers do -1 damage. '
   targetUnit: 4
   targetValue: 2
   value: 1
-  debuffSprite: {fileID: 0}
+  debuffSprite: {fileID: 1208040086343421634, guid: 8dba865ba1ad10445aa6e9d658aab636, type: 3}

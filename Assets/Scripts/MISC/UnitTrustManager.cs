@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UnitTrustManager : MonoBehaviour
 {
@@ -60,7 +62,16 @@ public class UnitTrustManager : MonoBehaviour
     [SerializeField]
     private List<TrustDebuff> debuffs = new List<TrustDebuff>();
 
-    
+
+    [SerializeField]
+    private Transform TrustParent; 
+
+    [SerializeField]
+    private Transform buttonA;
+    [SerializeField]
+    private Transform buttonB; 
+
+
 
 
     private void Awake()
@@ -86,9 +97,29 @@ public class UnitTrustManager : MonoBehaviour
     }
 
 
-    public void ApplyDebuff(TrustDebuff trustDebuff)
+    public void DisplayDebuffs()
     {
-        print("applied " + trustDebuff.debuffName);
+        TrustParent.gameObject.SetActive(true); 
+        shuffleDebuffs();
+        buttonA.GetComponent<Image>().sprite = debuffs[0].debuffSprite;
+        buttonB.GetComponent<Image>().sprite = debuffs[1].debuffSprite;
+
+        buttonA.GetChild(0).GetComponent<TextMeshProUGUI>().text = debuffs[0].name;
+        buttonB.GetChild(0).GetComponent<TextMeshProUGUI>().text = debuffs[1].name;
+
+        buttonA.GetChild(1).GetComponent<TextMeshProUGUI>().text = debuffs[0].description;
+        buttonB.GetChild(1).GetComponent<TextMeshProUGUI>().text = debuffs[1].description;
+    }
+
+    public void ApplyDebuffButton(int num)
+    {
+        ApplyDebuff(debuffs[num]);
+        TrustParent.gameObject.SetActive(false);
+        WaveManager.Instance.startWave();
+    } 
+
+    private void ApplyDebuff(TrustDebuff trustDebuff)
+    {
         if (trustDebuff.targetUnit == UnitType.ALL)
         {
             ApplyToAllUnits(trustDebuff); 
@@ -137,6 +168,18 @@ public class UnitTrustManager : MonoBehaviour
                 break;
 
         }
+    }
+    private void shuffleDebuffs()
+    {
+        for (int i = debuffs.Count - 1; i >= 0; i--)
+        {
+            int j = Random.Range(0, i);
+            TrustDebuff temp = debuffs[i];
+            debuffs[i] = debuffs[j];
+            debuffs[j] = temp;
+        }
+
+   
     }
 
     public float GetPlayerMoveSpeed(UnitType unitType)

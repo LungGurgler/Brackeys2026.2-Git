@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b2fc6ca3cd08584999d69735661ace6, type: 3}
+  m_Name: Golem
+  m_EditorClassIdentifier: Assembly-CSharp::UnitGarrison
+  unit: 3
+  unitSprite: {fileID: 4966447026822845920, guid: 28b09e6578ef8964dabf2d95bdc9c28d, type: 3}
+  numUnitsSpawn: 0
+  minRound: 4
+  maxRound: 2147483647

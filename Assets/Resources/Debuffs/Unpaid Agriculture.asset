@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71aa8239eb3d8dc4fa06d77f7f837c29, type: 3}
+  m_Name: Unpaid Agriculture
+  m_EditorClassIdentifier: Assembly-CSharp::TrustDebuff
+  description: -1hp for allied Farmers
+  targetUnit: 0
+  targetValue: 3
+  value: 1
+  debuffSprite: {fileID: 58100429544625867, guid: 33e39dae0c40bab4c97ee1b628a657a7, type: 3}

@@ -58,7 +58,7 @@ public class KingController : MonoBehaviour
         currentHealth = Mathf.Clamp(currentHealth,0,maxHealth);
         if(currentHealth <= 0)
         {
-            print("Dead");
+           
             Time.timeScale = 0f; 
         }
     }

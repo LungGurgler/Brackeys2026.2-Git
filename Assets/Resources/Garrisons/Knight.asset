@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b2fc6ca3cd08584999d69735661ace6, type: 3}
+  m_Name: Knight
+  m_EditorClassIdentifier: Assembly-CSharp::UnitGarrison
+  unit: 1
+  unitSprite: {fileID: -1499900109277536864, guid: f120b4591f77a0b4ea74924c25009001, type: 3}
+  numUnitsSpawn: 8
+  minRound: 2
+  maxRound: 2147483647

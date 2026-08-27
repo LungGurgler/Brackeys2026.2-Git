@@ -162,7 +162,7 @@ MonoBehaviour:
   baseMoveSpeed: 5
   baseAttackDamage: 2
   attackRange: 2
-  baseAttackCooldown: 0.75
+  baseAttackCooldown: 0.5
   isAlly: 0
   UnitType: 0
   rangedUnit: 0

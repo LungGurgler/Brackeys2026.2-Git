@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UnitController : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class UnitController : MonoBehaviour
 
     private List<Unit> activePlayerUnits = new List<Unit>();
     private List<Unit> activeEnemyUnits = new List<Unit>();
+    public List<Unit> ActiveEnemyUnits { get { return activeEnemyUnits; } }
     private List<Unit> UnitsToSpawnNext = new List<Unit>();
 
     private Dictionary<UnitType, int> UnitsToSpawn = new() //stores the additional units to be spawned next round 
@@ -21,11 +23,10 @@ public class UnitController : MonoBehaviour
         [UnitType.Archer] = 0,
         [UnitType.Wizard] = 0,
         [UnitType.Golem] = 0,
-       
+
     };
 
-    [SerializeField]
-    private GameObject[] unitObjects;
+
 
     [SerializeField]
     private Transform[] enemySpawnPoints;
@@ -62,10 +63,7 @@ public class UnitController : MonoBehaviour
         {
             SpawnPlayerUnits(5,UnitType.Archer);
         }
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            SpawnEnemies(3);
-        }
+        
 
         if (Input.GetKeyDown(KeyCode.X))
         {
@@ -79,10 +77,14 @@ public class UnitController : MonoBehaviour
     
     public void RemovePlayerUnit(Unit unit)
     {
-        //UnitsToSpawn[unit.unitType]++;
-        //UnitsToSpawn[unit.unitType] = (int) Mathf.Clamp(UnitsToSpawn[unit.unitType], 0, Mathf.Infinity);
+        UnitsToSpawn[unit.unitType]++;
         playerUnitsDead++; 
         activePlayerUnits.Remove(unit); 
+    }
+
+    public void RemoveEnemyUnit(Unit unit)
+    {
+        activeEnemyUnits.Remove(unit);
     }
     
     public void SpawnPlayerUnits(int count, UnitType unitType)
@@ -105,37 +107,52 @@ public class UnitController : MonoBehaviour
     }
 
 
-    public void AddEnemyUnit(Unit unit)
+  
+
+
+    public void SpawnEnemies(UnitType unitType, float count)
     {
-        activeEnemyUnits.Remove(unit);
-        if (activeEnemyUnits.Count <= 0)
-        { 
-            //end wave here!
-        }
-    }
-
-
-    public void SpawnEnemies(int count)
-    {
-        int num = Random.Range(0, unitObjects.Length);
-
+        GameObject spawnUnit = UnitLib.getUnit(unitType); 
+        
         for(int i = 0; i < count; i++)
         {
 
-            Unit unit = Instantiate(unitObjects[num], getRandomSpawnPoint(), Quaternion.identity, enemyParent).GetComponent<Unit>();
+            Unit unit = Instantiate(spawnUnit, getRandomSpawnPoint(), Quaternion.identity, enemyParent).GetComponent<Unit>();
             unit.transform.tag = "EnemyUnit";
             unit.isAlly = false;
+            unit.gameObject.GetComponentInChildren<SpriteRenderer>().color = Color.red;
             activeEnemyUnits.Add(unit);
         }
     }
 
-    private void ResetPlayerUnitPos()
+    public void SpawnTraitors()
+    {
+        foreach (var item in UnitsToSpawn)
+        {
+            GameObject spawnUnit = UnitLib.getUnit(item.Key);
+            for(int i = 0; i < UnitsToSpawn[item.Key]; i++)
+            {
+                Unit unit = Instantiate(spawnUnit, getRandomSpawnPoint(), Quaternion.identity, enemyParent).GetComponent<Unit>();
+                unit.transform.tag = "EnemyUnit";
+                unit.isAlly = false;
+                unit.gameObject.GetComponentInChildren<SpriteRenderer>().color = Color.green;
+                unit.SetTraitor();
+                activeEnemyUnits.Add(unit);
+            }
+
+        }
+
+    }
+
+    public void ResetPlayerUnitPos()
     {
        for(int i = 0; i < activePlayerUnits.Count; i++)
         {
             activePlayerUnits[i].PlacePlayerUnit(i);
         }
     }
+    
+   
     
     public Vector2 getRandomSpawnPoint()
     {
