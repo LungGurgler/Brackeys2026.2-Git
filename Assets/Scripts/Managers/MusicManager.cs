@@ -35,6 +35,8 @@ public class MusicManager : MonoBehaviour
     private void Start()
     {
         audioSource = gameObject.GetComponent<AudioSource>();
+        playAudio(MusicKeys.PlaceholderBGM);
+        print("Playing, " + MusicKeys.PlaceholderBGM);
     }
     private void Update()
     {

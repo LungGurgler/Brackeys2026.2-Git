@@ -8,16 +8,18 @@ public enum MusicKeys
     Null,
     ExampleKey,
     ExampleKey2,
+    PlaceholderBGM,
 }
 
 public static class MusicLib
 {
 
 
-    private static readonly Dictionary<MusicKeys, string> FilePaths = new() //Static Readonly because you can't const a Dictionary in C# apparently 
+    private static readonly Dictionary<MusicKeys, string> FilePaths = new() //Static Readonly because you can't const a Dictionary in C# apparently
     {
         [MusicKeys.ExampleKey] = "ExampleFile/ExampleKeySong",
-        [MusicKeys.ExampleKey2] = "ExampleFile / ExampleKeySong2"
+        [MusicKeys.ExampleKey2] = "ExampleFile/ExampleKeySong2",
+        [MusicKeys.PlaceholderBGM] = "Sounds/Music/_investigation",
     };
 
 

@@ -38,6 +38,8 @@ public class UIFeedback : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     public void OnClicked()
     {
         // AudioManager.instance.PlaySound(Clickclip);
+        // SoundManager.PlaySFX(SFXKeys.MenuBtnPressed, 1f);
+        SoundManager.Instance.PlaySFX(SFXKeys.MenuBtnPressed, 1f);
         transform.rotation = rotate * Quaternion.Euler(0, 0, -rotateTilt);
         transform.localScale =  scale * (scaleMult/2);
     }
@@ -46,6 +48,7 @@ public class UIFeedback : MonoBehaviour, IPointerEnterHandler, IPointerExitHandl
     {
         OnHover = true;
         // AudioManager.instance.PlaySound(Hoverclip,0.25f);
+        SoundManager.Instance.PlaySFX(SFXKeys.UIButtonHover, 1f);
     }
 
     public void OnPointerExit(PointerEventData eventData)
