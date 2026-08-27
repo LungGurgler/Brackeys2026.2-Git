@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1588279728192860771}
   - component: {fileID: 2149024030993380469}
   - component: {fileID: 2562332453069574284}
+  - component: {fileID: 7713870575618567567}
   m_Layer: 0
   m_Name: GoldKnight
   m_TagString: Untagged
@@ -81,6 +82,7 @@ MonoBehaviour:
   baseAttackDamage: 12.5
   attackRange: 2
   baseAttackCooldown: 0.75
+  anim: {fileID: 7713870575618567567}
   isAlly: 0
   UnitType: 2
   rangedUnit: 0
@@ -166,6 +168,28 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 1
+--- !u!95 &7713870575618567567
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1111033673093782676}
+  m_Enabled: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 2685a80c0e41a5f45b030e9497edd50c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &5052187607452794294
 GameObject:
   m_ObjectHideFlags: 0

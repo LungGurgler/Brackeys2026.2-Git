@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3802816489208073178}
   - component: {fileID: 3808558500901831030}
   - component: {fileID: 3084212646083938964}
+  - component: {fileID: 8176371739408433067}
   m_Layer: 0
   m_Name: Farmer
   m_TagString: Untagged
@@ -163,9 +164,32 @@ MonoBehaviour:
   baseAttackDamage: 2
   attackRange: 2
   baseAttackCooldown: 0.75
+  anim: {fileID: 8176371739408433067}
   isAlly: 0
   UnitType: 0
   rangedUnit: 0
+--- !u!95 &8176371739408433067
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2798270026217401947}
+  m_Enabled: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 25306bdfebdca5e4d9d3d092faa97946, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &5716715281156215756
 GameObject:
   m_ObjectHideFlags: 0
