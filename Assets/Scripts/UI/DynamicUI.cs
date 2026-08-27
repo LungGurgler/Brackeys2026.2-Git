@@ -5,7 +5,7 @@ public class DynamicUI : MonoBehaviour
 {
     [SerializeField] private float followSpeed = 5f;
     [SerializeField] private Vector2 offset;
-    [SerializeField] private float maxDistance = 100f;
+    [SerializeField] private float maxDistance = 25f;
 
     private RectTransform rectTransform;
     private Vector2 startPos;
