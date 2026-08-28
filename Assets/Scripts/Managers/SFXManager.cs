@@ -20,7 +20,7 @@ public class SoundManager : MonoBehaviour
             Instance = this;
         }
 
-        DontDestroyOnLoad(gameObject); //Keeps it persistant between scenes
+        DontDestroyOnLoad(gameObject);
     }
 
 
@@ -42,7 +42,8 @@ public class SoundManager : MonoBehaviour
             return;
         }
 
-        audioSource.pitch = 1 + Random.Range(-pitchRand, pitchRand);
+        // audioSource.pitch = 1 + Random.Range(-pitchRand, pitchRand);
+        audioSource.pitch = 1 + Random.Range(0, pitchRand);
         audioSource.PlayOneShot(stream);
     }
 

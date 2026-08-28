@@ -4,6 +4,7 @@ using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
+using BarthaSzabolcs.Tutorial_SpriteFlash;
 
 public enum UnitType
 {
@@ -12,7 +13,7 @@ public enum UnitType
     GoldKnight = 2,
     Golem = 3,
     Archer = 4,
-    Wizard = 5, 
+    Wizard = 5,
     Catapult = 6,
     ALL = 7 //For debuff purposes
 }
@@ -31,7 +32,7 @@ public class Unit : MonoBehaviour
     private float baseAttackDamage = 4f;
     private float attackDamage { get { if (isAlly) { return Mathf.Clamp(baseAttackDamage - UnitTrustManager.Instance.GetPlayerDamage(unitType),1,Mathf.Infinity); } else { return baseAttackDamage + UnitTrustManager.Instance.GetEnemyUnitDamage(UnitType); } } }
     [SerializeField]
-    private float attackRange = 1f; 
+    private float attackRange = 1f;
     [SerializeField]
     private float baseAttackCooldown = 1f;
     private float attackCooldown { get { if (isAlly) { return baseAttackCooldown * UnitTrustManager.Instance.GetPlayerAttackSpeed(unitType); } else { return baseAttackCooldown; } } }
@@ -39,25 +40,28 @@ public class Unit : MonoBehaviour
 
 
 
-    private Animator anim; 
+    public Animator anim;
     private Rigidbody2D rb;
 
     public bool isAlly;
     private Vector2 positionOffset;
-    Sprite sprite; 
-   
+    Sprite sprite;
+
     [SerializeField]
-    private UnitType UnitType; 
+    private UnitType UnitType;
     public UnitType unitType { get { return UnitType; } }
     [SerializeField]
-    bool rangedUnit; 
-   
+    bool rangedUnit;
+
 
     CircleCollider2D hitRadius;
-    BoxCollider2D hitCollider; 
+    BoxCollider2D hitCollider;
 
     private Transform currentTarget;
-    List<Transform> validTargets = new List<Transform>(); 
+    List<Transform> validTargets = new List<Transform>();
+
+    // [SerializeField] private SimpleFlash simpleFlash;
+    [SerializeField] private SimpleFlash simpleFlash;
 
 
     private void Awake()
@@ -75,7 +79,7 @@ public class Unit : MonoBehaviour
         rb.bodyType = RigidbodyType2D.Dynamic;
         rb.freezeRotation = true;
         rb.gravityScale = 0f;
-        hitRadius.radius = attackRange; 
+        hitRadius.radius = attackRange;
 
         if (isAlly)
         {
@@ -88,15 +92,16 @@ public class Unit : MonoBehaviour
 
     private void Update()
     {
-       
+
         if(validTargets.Count > 0)
         {
             currentTarget = validTargets[0].transform;
         }
         else
         {
-            currentTarget = null; 
+            currentTarget = null;
         }
+
 
         if (rangedUnit)
         {
@@ -124,7 +129,7 @@ public class Unit : MonoBehaviour
             {
                 if (unitType == UnitType.Catapult || unitType == UnitType.Archer || unitType == UnitType.Wizard)
                 {
-                    rb.linearVelocity = Vector2.zero;  
+                    rb.linearVelocity = Vector2.zero;
                 } else
                 {
                     rb.linearVelocity = (currentTarget.position - transform.position) * moveSpeed * Time.deltaTime * 5f;
@@ -133,15 +138,23 @@ public class Unit : MonoBehaviour
             else
             {
                 rb.linearVelocity = (KingController.Instance.kingPosition - (Vector2)transform.position) * moveSpeed * Time.deltaTime * 5f;
-            } 
+            }
+        }
+
+        if (anim) {
+            if (rb.linearVelocity == Vector2.zero) {
+                anim.SetBool("isWalking", true);
+            } else {
+                anim.SetBool("isWalking", false);
+            }
         }
     }
 
     private void ProcessAllyMovement()
     {
-        if (currentTarget != null && !(unitType == UnitType.Catapult || unitType == UnitType.Archer || unitType == UnitType.Wizard)) //checks if there is a target (melee only) 
+        if (currentTarget != null && !(unitType == UnitType.Catapult || unitType == UnitType.Archer || unitType == UnitType.Wizard)) //checks if there is a target (melee only)
         {
-            if (Vector2.Distance(currentTarget.position, transform.position) < DistanceToKing()) //checks if the target is closer than the king 
+            if (Vector2.Distance(currentTarget.position, transform.position) < DistanceToKing()) //checks if the target is closer than the king
             {
                 rb.linearVelocity = (currentTarget.position - transform.position) * moveSpeed * Time.deltaTime * 5f; //moves to the target if so
             }
@@ -152,7 +165,7 @@ public class Unit : MonoBehaviour
 
         }
         else
-        { 
+        {
             rb.linearVelocity = (KingController.Instance.kingPosition + positionOffset - (Vector2)transform.position) * moveSpeed * 5f;
         }
     }
@@ -222,10 +235,10 @@ public class Unit : MonoBehaviour
                         if(collision.tag == "PlayerUnit")
                         {
                             collision.GetComponent<Unit>().TakeDamage(attackDamage);
-                        } 
+                        }
                         else if(collision.tag == "King")
                         {
-                            KingController.Instance.TakeDamage(attackDamage); 
+                            KingController.Instance.TakeDamage(attackDamage);
                         }
                     }
                 }
@@ -234,19 +247,22 @@ public class Unit : MonoBehaviour
                 break;
         }
 
-        
+
     }
 
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
+        if (simpleFlash)
+            simpleFlash.Flash();
+        
         if (currentHealth <= 0)
         {
             Die();
         }
     }
 
-   
+
 
     IEnumerator StartAttackCooldown()
     {
@@ -256,7 +272,7 @@ public class Unit : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-     
+
         if (isAlly)
         {
             if (collision.tag == "EnemyUnit")
@@ -269,7 +285,7 @@ public class Unit : MonoBehaviour
             if (collision.tag == "King")
             {
                 validTargets.Insert(0,collision.transform);
-                
+
             }
             else if (collision.tag == "PlayerUnit")
             {
@@ -278,7 +294,7 @@ public class Unit : MonoBehaviour
 
 
         }
-        
+
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -294,11 +310,11 @@ public class Unit : MonoBehaviour
         {
             if (collision.tag == "King")
             {
-                validTargets.Remove(collision.transform); 
+                validTargets.Remove(collision.transform);
                 if (validTargets.Count != 0)
                 {
                     currentTarget = validTargets[0].transform;
-                } 
+                }
             }
 
             else if (collision.tag == "PlayerUnit")
@@ -311,13 +327,13 @@ public class Unit : MonoBehaviour
     }
 
     //===============================
-    //  ATTACKS FOR MELEE UNITS ONLY 
+    //  ATTACKS FOR MELEE UNITS ONLY
     //===============================
 
 
-    private void OnCollisionStay2D(Collision2D collision)   
+    private void OnCollisionStay2D(Collision2D collision)
     {
-        
+
         if (attackReady && !rangedUnit)
         {
                
@@ -361,7 +377,7 @@ public class Unit : MonoBehaviour
 
     private void Die()
     {
-        validTargets.Clear(); 
+        validTargets.Clear();
         if (isAlly)
         {
             UnitController.Instance.RemovePlayerUnit(this);
@@ -378,7 +394,7 @@ public class Unit : MonoBehaviour
 
     public void PlacePlayerUnit(int index)
     {
-        
+
         Quaternion rotation = Quaternion.AngleAxis(15f * Mathf.Floor(index / 8), Vector3.forward);
         positionOffset = rotation * ((1f + 0.35f * Mathf.Floor(index / 8)) * CardinalVector(index % 8));
         transform.position = KingController.Instance.kingPosition + positionOffset;
@@ -391,7 +407,7 @@ public class Unit : MonoBehaviour
         switch (num)
         {
             case 0:
-                return Vector2.up; 
+                return Vector2.up;
             case 1:
                 return new Vector2(0.7071f, 0.7071f);
             case 2:
@@ -403,12 +419,12 @@ public class Unit : MonoBehaviour
             case 5:
                 return new Vector2(-0.7071f, -0.7071f);
             case 6:
-                return Vector2.left; 
+                return Vector2.left;
             case 7:
                 return new Vector2(-0.7071f, 0.7071f);
             default:
-                return Vector2.zero; 
-                     
+                return Vector2.zero;
+
         }
     }
 
@@ -424,12 +440,12 @@ public class Unit : MonoBehaviour
 
     private float DistanceToKing()
     {
-        return Vector2.Distance(KingController.Instance.kingPosition, transform.position); 
+        return Vector2.Distance(KingController.Instance.kingPosition, transform.position);
     }
 
 
 
-    
+
 
 
     //if (isAlly)

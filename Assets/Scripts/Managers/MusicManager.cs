@@ -28,13 +28,14 @@ public class MusicManager : MonoBehaviour
             Instance = this;
         }
 
-        DontDestroyOnLoad(gameObject); //Keeps it persistant between scenes 
+        DontDestroyOnLoad(gameObject); 
 
     }
 
     private void Start()
     {
         audioSource = gameObject.GetComponent<AudioSource>();
+        playAudio(MusicKeys.PlaceholderBGM);
     }
     private void Update()
     {
@@ -79,7 +80,7 @@ public class MusicManager : MonoBehaviour
         while (elapsedTime < fadeDuration)
         {
             elapsedTime += Time.deltaTime;
-            audioSource.volume = Mathf.Lerp(max, 0, elapsedTime / fadeDuration);//fades out the audio 
+            audioSource.volume = Mathf.Lerp(max, 0, elapsedTime / fadeDuration);
             yield return new WaitForEndOfFrame();
         }
 
