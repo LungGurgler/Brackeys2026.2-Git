@@ -40,10 +40,6 @@ public class UnitController : MonoBehaviour
     private Transform enemyParent;
     private Camera cam;
 
-    private List<float> cameraSizevalues = new()
-    {
-      5,10,15,20,25
-    };
  
     private void Awake()
     {

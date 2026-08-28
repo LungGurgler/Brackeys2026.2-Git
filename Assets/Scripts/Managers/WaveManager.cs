@@ -55,6 +55,15 @@ public class WaveManager : MonoBehaviour
     [SerializeField]
     private Transform buttonB;
 
+
+
+    [SerializeField]
+    private TextMeshProUGUI waveText;
+    [SerializeField]
+    private TextMeshProUGUI enemiesRemainingText; 
+
+
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -68,6 +77,10 @@ public class WaveManager : MonoBehaviour
 
     }
 
+    private void Start()
+    {
+        startWave();     
+    }
 
     private void Update()
     {
@@ -80,8 +93,10 @@ public class WaveManager : MonoBehaviour
         }
         if (waveActive)
         {
+            enemiesRemainingText.text = UnitController.Instance.ActiveEnemyUnits.Count.ToString(); 
             if (UnitController.Instance.ActiveEnemyUnits.Count <= 0)
             {
+              
                 endWave();
             }
         }
@@ -90,7 +105,7 @@ public class WaveManager : MonoBehaviour
     public void startWave()
     {
         waveActive = true;
-        print(currentWave); 
+        waveText.text = "Wave " + (currentWave - 1); 
         if (currentWave == 1)
         {
             UnitController.Instance.SpawnPlayerUnits(5, UnitType.Farmer);
@@ -107,6 +122,8 @@ public class WaveManager : MonoBehaviour
                 {
                     continue; 
                 }
+
+                print(validUnits);
 
                 if (unitMinWave[item.Key] <= currentWave - 1)
                 {
