@@ -15,31 +15,21 @@ public class WaveManager : MonoBehaviour
     private bool waveActive = false; 
 
 
-    private List<UnitType> unitsAvailable = new List<UnitType>(); 
+    private List<UnitType> unitsAvailable = new List<UnitType>();
 
-    private Dictionary<UnitType, Vector2Int> unitSpawn = new()
+    private Dictionary<UnitType, int> unitMinWave = new()
     {
-        [UnitType.Farmer] = new Vector2Int(1, 10),
-        [UnitType.Archer] = new Vector2Int(2, Mathf.RoundToInt(Mathf.Infinity)),
-        [UnitType.Knight] = new Vector2Int(3, Mathf.RoundToInt(Mathf.Infinity)),
-        [UnitType.Golem] = new Vector2Int(4, Mathf.RoundToInt(Mathf.Infinity)),
-        [UnitType.GoldKnight] = new Vector2Int(6, Mathf.RoundToInt(Mathf.Infinity)),
-        [UnitType.Wizard] = new Vector2Int(7, Mathf.RoundToInt(Mathf.Infinity)),
+        [UnitType.Farmer] = 1,
+        [UnitType.Archer] = 2,
+        [UnitType.Knight] = 3,
+        [UnitType.Golem] = 4,
+        [UnitType.GoldKnight] = 5,
+        [UnitType.Wizard] = 6,
       
 
     };
 
-    private Dictionary<UnitType, int> unitsToSpawn = new()
-    {
-        [UnitType.Farmer] = 3,
-        [UnitType.Archer] = 6,
-        [UnitType.Knight] = 6,
-        [UnitType.Golem] = 4,
-        [UnitType.GoldKnight] = 5,
-        [UnitType.Wizard] = 4,
-
-    };
-
+    
     //======================
     //  GARRISON MANAGEMENT
     //======================
@@ -100,39 +90,43 @@ public class WaveManager : MonoBehaviour
     public void startWave()
     {
         waveActive = true;
-        CheckAvaialbleUnits();
+        print(currentWave); 
         if (currentWave == 1)
         {
-            UnitController.Instance.SpawnPlayerUnits(30, UnitType.Farmer);
+            UnitController.Instance.SpawnPlayerUnits(5, UnitType.Farmer);
         }
-       
-        
-            for (int i = 0; i < 3 * currentWave; i++)
+
+        int availablePoints = Mathf.FloorToInt(garrisonValue * Mathf.Pow(1.01f,currentWave - 1));
+        while (availablePoints > 0)
+        {
+            List<UnitType> validUnits = new List<UnitType>();
+
+            foreach (var item in unitGarrisonValue)
             {
-                UnitType unit = unitsAvailable[Random.Range(0, unitsAvailable.Count)];
-                UnitController.Instance.SpawnEnemies(unit, unitsToSpawn[unit]);
+                if(item.Key == UnitType.Farmer && currentWave >= 10) 
+                {
+                    continue; 
+                }
+
+                if (unitMinWave[item.Key] <= currentWave - 1)
+                {
+                    if (unitGarrisonValue[item.Key] <= availablePoints)
+                    {
+                        validUnits.Add(item.Key);
+                    }
+                }
             }
+
+            UnitType unit = validUnits[Random.Range(0, validUnits.Count)];
+            UnitController.Instance.SpawnEnemies(unit,1);
+            availablePoints -= unitGarrisonValue[unit]; 
+        }
+            
         UnitController.Instance.SpawnTraitors();
         
     }
 
-    private void CheckAvaialbleUnits()
-    {
-        foreach (var item in unitSpawn)
-        {
-            if (unitSpawn[item.Key].x <= currentWave && unitSpawn[item.Key].y >= currentWave)
-            {
-                unitsAvailable.Add(item.Key);
-            }
-            else
-            {
-                if (unitsAvailable.Contains(item.Key))
-                {
-                    unitsAvailable.Remove(item.Key);
-                }
-            }
-        }
-    }
+  
 
     public void endWave()
     {
@@ -193,5 +187,5 @@ public class WaveManager : MonoBehaviour
         return validUnits; 
     }
 
-
+    
 }

@@ -90,10 +90,36 @@ public class UnitTrustManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKeyDown(KeyCode.P))
         {
-            ApplyDebuff(debuffs[0]);
-        }  
+            print("PlayerUnitAttackSpeedMult");
+            foreach (var item in playerUnitAttackSpeedMult)
+            {
+                print(item);
+            }
+            print("playerUnitDamageDebuff");
+            foreach (var item in playerUnitDamageDebuff)
+            {
+                print(item);
+            }
+            print("playerUnitHealthDebuff");
+            foreach (var item in playerUnitHealthDebuff)
+            {
+                print(item);
+            }
+            print("playerUnitMoveSpeedMult");
+            foreach (var item in playerUnitMoveSpeedMult)
+            {
+                print(item);
+            }
+            print("EnemyUnitAttackDamage");
+            foreach (var item in EnemyUnitDamageBuff)
+            {
+                print(item);
+            }
+
+
+        }
     }
 
 
@@ -155,16 +181,22 @@ public class UnitTrustManager : MonoBehaviour
         switch (trustDebuff.targetValue)
         {
             case Values.Health:
-                foreach (var item in playerUnitHealthDebuff)
-                {
-                    playerUnitHealthDebuff[item.Key] += trustDebuff.value; 
-                }
+                
+                playerUnitHealthDebuff[UnitType.Farmer] += trustDebuff.value;
+                playerUnitHealthDebuff[UnitType.Knight] += trustDebuff.value;
+                playerUnitHealthDebuff[UnitType.GoldKnight] += trustDebuff.value;
+                playerUnitHealthDebuff[UnitType.Archer] += trustDebuff.value;
+                playerUnitHealthDebuff[UnitType.Wizard] += trustDebuff.value;
+                playerUnitHealthDebuff[UnitType.Golem] += trustDebuff.value;
+                
                 break;
             case Values.MoveSpeed:
-                foreach (var item in playerUnitMoveSpeedMult)
-                {
-                    playerUnitMoveSpeedMult[item.Key] *= 1 - trustDebuff.value / 100;
-                }
+                    playerUnitMoveSpeedMult[UnitType.Farmer] *= 1 - trustDebuff.value / 100;
+                    playerUnitMoveSpeedMult[UnitType.Knight] *= 1 - trustDebuff.value / 100;
+                    playerUnitMoveSpeedMult[UnitType.GoldKnight] *= 1 - trustDebuff.value / 100;
+                    playerUnitMoveSpeedMult[UnitType.Golem] *= 1 - trustDebuff.value / 100;
+                    playerUnitMoveSpeedMult[UnitType.Archer] *= 1 - trustDebuff.value / 100;
+                    playerUnitMoveSpeedMult[UnitType.Wizard] *= 1 - trustDebuff.value / 100;
                 break;
 
         }
@@ -182,6 +214,7 @@ public class UnitTrustManager : MonoBehaviour
    
     }
 
+    
     public float GetPlayerMoveSpeed(UnitType unitType)
     {
         return playerUnitMoveSpeedMult[unitType];

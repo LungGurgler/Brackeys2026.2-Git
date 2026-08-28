@@ -120,7 +120,7 @@ public class Unit : MonoBehaviour
         else
         {
 
-            if (validTargets.Count > 0)
+            if (validTargets.Count > 0 && currentTarget != null)
             {
                 if (unitType == UnitType.Catapult || unitType == UnitType.Archer || unitType == UnitType.Wizard)
                 {
@@ -416,7 +416,8 @@ public class Unit : MonoBehaviour
     public void SetTraitor()
     {
         baseAttackDamage /= 2;
-        baseMaximumHealth /= 2; 
+        baseMaximumHealth /= 2;
+        currentHealth = baseMaximumHealth; 
         
     }
 

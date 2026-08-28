@@ -170,7 +170,7 @@ MonoBehaviour:
   baseMaximumHealth: 15
   currentHealth: 0
   baseMoveSpeed: 5
-  baseAttackDamage: 4.5
+  baseAttackDamage: 5
   attackRange: 2.5
   baseAttackCooldown: 1.25
   isAlly: 0

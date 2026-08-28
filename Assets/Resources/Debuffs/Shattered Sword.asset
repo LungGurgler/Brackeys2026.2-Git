@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71aa8239eb3d8dc4fa06d77f7f837c29, type: 3}
   m_Name: Shattered Sword
   m_EditorClassIdentifier: Assembly-CSharp::TrustDebuff
-  description: Allied Wizards do -1 damage
-  targetUnit: 5
+  description: Allied Knights do -1 damage
+  targetUnit: 1
   targetValue: 2
   value: 1
   debuffSprite: {fileID: 6829838428207772036, guid: 61db58160284c41428d719f1f47b2c4e, type: 3}
