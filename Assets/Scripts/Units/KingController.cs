@@ -1,8 +1,8 @@
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Events;
 using BarthaSzabolcs.Tutorial_SpriteFlash;
+using UnityEngine.UI;
 
 public class KingController : MonoBehaviour
 {
@@ -48,8 +48,6 @@ public class KingController : MonoBehaviour
 
     private void Update()
     {
-
-
         Vector2 move = Vector2.zero;
 
         move.x = Input.GetAxisRaw("Horizontal");
@@ -61,14 +59,10 @@ public class KingController : MonoBehaviour
         float clampedY = Mathf.Clamp(transform.position.y, -5f * scale, 5f * scale);
 
         transform.position = new Vector2(clampedX, clampedY);
-        //8.75f: x
-        //5f: y
-    }
 
-    private void FixedUpdate()
-    {
 
     }
+
     public void TakeDamage(float damage)
     {
         if (currentHealth > 0)

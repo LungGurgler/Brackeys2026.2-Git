@@ -9,12 +9,12 @@ using UnityEngine.UI;
 
 public class WaveManager : MonoBehaviour
 {
-    public static WaveManager Instance;
-
-
+    public static WaveManager Instance; 
+   
+   
     public int currentWave { private set; get; } = 1;
     [SerializeField]
-    private bool waveActive = false;
+    private bool waveActive = false; 
 
 
     private List<UnitType> unitsAvailable = new List<UnitType>();
@@ -27,11 +27,11 @@ public class WaveManager : MonoBehaviour
         [UnitType.Golem] = 4,
         [UnitType.GoldKnight] = 5,
         [UnitType.Wizard] = 6,
-
+      
 
     };
 
-
+    
     //======================
     //  GARRISON MANAGEMENT
     //======================
@@ -45,7 +45,7 @@ public class WaveManager : MonoBehaviour
         [UnitType.Wizard] = 8,
     };
 
-    private UnitType[] garrisonUnits = new UnitType[2];
+    private UnitType[] garrisonUnits = new UnitType[2]; 
 
     private int garrisonValue { get { return (currentWave - 1) * 10; } }
 
@@ -70,8 +70,8 @@ public class WaveManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI dsHeader;
     [SerializeField]
-    private TextMeshProUGUI dsBodyText;
-
+    private TextMeshProUGUI dsBodyText; 
+    
 
     private void Awake()
     {
@@ -88,7 +88,7 @@ public class WaveManager : MonoBehaviour
 
     private void Start()
     {
-        startWave();
+        startWave();     
     }
 
     private void Update()
@@ -102,10 +102,10 @@ public class WaveManager : MonoBehaviour
         }
         if (waveActive)
         {
-            enemiesRemainingText.text = UnitController.Instance.ActiveEnemyUnits.Count.ToString();
+            enemiesRemainingText.text = UnitController.Instance.ActiveEnemyUnits.Count.ToString(); 
             if (UnitController.Instance.ActiveEnemyUnits.Count <= 0)
             {
-
+              
                 endWave();
             }
         }
@@ -114,7 +114,7 @@ public class WaveManager : MonoBehaviour
     public void startWave()
     {
         waveActive = true;
-        waveText.text = "Wave " + (currentWave - 1);
+        waveText.text = "Wave " + (currentWave - 1); 
         if (currentWave == 1)
         {
             UnitController.Instance.SpawnPlayerUnits(10, UnitType.Farmer);
@@ -152,7 +152,7 @@ public class WaveManager : MonoBehaviour
             }
         }
         UnitController.Instance.SpawnTraitors();
-
+        
     }
 
 
@@ -168,28 +168,27 @@ public class WaveManager : MonoBehaviour
 
     public void endGame()
     {
-        SoundManager.Instance.PlaySFX(SFXKeys.LoseGame);
         deathScreenBG.transform.parent.gameObject.SetActive(true);
         waveActive = false;
-        Time.timeScale = 0f;
+        Time.timeScale = 0f; 
         StartCoroutine(startDeathScreen());
         UnitController.Instance.DestroyAllAllies();
-
+        
     }
 
-    private IEnumerator startDeathScreen()
+    private IEnumerator startDeathScreen() 
     {
         Color32 targetColour = deathScreenBG.color;
         Color32 startColour = deathScreenBG.color;
         startColour.a = 0;
         deathScreenBG.color = startColour;
         targetColour.a = 155;
-        float elapsedTime = 0f;
+        float elapsedTime = 0f; 
         while (elapsedTime < 2f)
         {
 
             elapsedTime += Time.unscaledDeltaTime;
-            deathScreenBG.color = Color32.Lerp(startColour, targetColour, elapsedTime / 2f);
+            deathScreenBG.color = Color32.Lerp(startColour, targetColour, elapsedTime / 2f); 
             yield return new WaitForEndOfFrame();
         }
 
@@ -200,10 +199,10 @@ public class WaveManager : MonoBehaviour
     {
         Color32 targetColour = dsHeader.color;
         Color32 startColour = dsHeader.color;
-        startColour.a = 0;
-        dsHeader.color = startColour;
+        startColour.a = 0; 
+        dsHeader.color = startColour; 
         targetColour.a = 255;
-        float elapsedTime = 0f;
+        float elapsedTime = 0f; 
         while (elapsedTime < 0.5f)
         {
 
@@ -220,7 +219,7 @@ public class WaveManager : MonoBehaviour
         Color startColour = dsBodyText.color;
         startColour.a = 0f;
         targetColour.a = 1f;
-        float elpasedTime = 0f;
+        float elpasedTime = 0f; 
         while (elpasedTime < 0.25f)
         {
             elpasedTime += Time.unscaledDeltaTime;
@@ -228,15 +227,15 @@ public class WaveManager : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
 
-        StartCoroutine(StartDelay(1.5f));
-
+        StartCoroutine(StartDelay(1.5f)); 
+       
     }
 
 
 
     private void BeginGarrison()
     {
-        GarrisonParent.gameObject.SetActive(true);
+        GarrisonParent.gameObject.SetActive(true); 
         List<UnitType> validUnits = new List<UnitType>();
         foreach (var item in unitGarrisonValue)
         {
@@ -251,7 +250,7 @@ public class WaveManager : MonoBehaviour
 
 
         }
-        validUnits = shuffle(validUnits);
+        validUnits = shuffle(validUnits); 
 
         garrisonUnits[0] = validUnits[0];
         garrisonUnits[1] = validUnits[1];
@@ -269,7 +268,7 @@ public class WaveManager : MonoBehaviour
 
     public void SelectGarrison(int num)
     {
-
+       
         UnitController.Instance.SpawnPlayerUnits(Mathf.FloorToInt(garrisonValue / unitGarrisonValue[garrisonUnits[num]]), garrisonUnits[num]);
         //Insert debuffs here!
         UnitTrustManager.Instance.DisplayDebuffs();
@@ -285,10 +284,10 @@ public class WaveManager : MonoBehaviour
             int j = Random.Range(0, i);
             UnitType temp = validUnits[i];
             validUnits[i] = validUnits[j];
-            validUnits[j] = temp;
+            validUnits[j] = temp; 
         }
 
-        return validUnits;
+        return validUnits; 
     }
 
    private IEnumerator StartDelay(float duration)
@@ -299,16 +298,16 @@ public class WaveManager : MonoBehaviour
 
     private IEnumerator loadScene(int index)
     {
-
+      
         Time.timeScale = 1f;
         AsyncOperation loadScene = SceneManager.LoadSceneAsync(index);
         while (!loadScene.isDone)
         {
             yield return new WaitForEndOfFrame();
         }
+        
 
-
-
+      
     }
-
+    
 }

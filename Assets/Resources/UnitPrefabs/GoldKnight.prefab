@@ -35,7 +35,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6508149015419552378}
-  - {fileID: 1424585564392817541}
+  - {fileID: 2368459684150729439}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &4463881118493997868
@@ -81,15 +81,15 @@ MonoBehaviour:
   currentHealth: 0
   baseMoveSpeed: 5
   baseAttackDamage: 12.5
-  attackRange: 2.75
+  attackRange: 2
   baseAttackCooldown: 0.75
   anim: {fileID: 7713870575618567567}
   isAlly: 0
   UnitType: 2
   rangedUnit: 0
   simpleFlash: {fileID: 7435343090130242645}
-  projectileObject: {fileID: 0}
   unitDeath: {fileID: 5944605653565320088, guid: 96c8f79dbe9d22b489a96e247817780a, type: 3}
+  projectileObject: {fileID: 0}
 --- !u!61 &2149024030993380469
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -194,7 +194,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!1 &3140176146663219594
+--- !u!1 &3156302783000212936
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -202,8 +202,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1424585564392817541}
-  - component: {fileID: 8068913415608466948}
+  - component: {fileID: 2368459684150729439}
+  - component: {fileID: 8839217049863420987}
   m_Layer: 0
   m_Name: Sword
   m_TagString: Untagged
@@ -211,29 +211,29 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1424585564392817541
+--- !u!4 &2368459684150729439
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3140176146663219594}
+  m_GameObject: {fileID: 3156302783000212936}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -0.30070576, w: 0.953717}
-  m_LocalPosition: {x: 0.21, y: -0.043, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: -0.061048605, w: 0.99813485}
+  m_LocalPosition: {x: 0.247, y: -0.031, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1472476339619900582}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -35}
---- !u!212 &8068913415608466948
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -7}
+--- !u!212 &8839217049863420987
 SpriteRenderer:
   serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3140176146663219594}
+  m_GameObject: {fileID: 3156302783000212936}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0

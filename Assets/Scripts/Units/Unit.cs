@@ -69,7 +69,7 @@ public class Unit : MonoBehaviour
     [SerializeField]
     private Transform projectileObject;
 
-
+    private bool flipped = false; 
 
     private void Awake()
     {
@@ -99,7 +99,7 @@ public class Unit : MonoBehaviour
 
     private void Update()
     {
-
+        
         if(validTargets.Count > 0)
         {
             currentTarget = validTargets[0].transform;
@@ -108,7 +108,30 @@ public class Unit : MonoBehaviour
         {
             currentTarget = null;
         }
+        if (currentTarget != null)
+        {
+            if (transform.position.x > currentTarget.position.x)
+            {
+                if (!flipped)
+                {
+                    flipped = true;
+                    Vector2 scale = transform.localScale;
+                    scale.x *= -1f;
+                    transform.localScale = scale;
+                }
 
+            }
+            else if (transform.position.x < currentTarget.position.x)
+            {
+                if (flipped)
+                {
+                    flipped = false;
+                    Vector2 scale = transform.localScale;
+                    scale.x *= -1f; 
+                    transform.localScale = scale; 
+                }
+            }
+        }
 
         if (rangedUnit)
         {
@@ -124,6 +147,8 @@ public class Unit : MonoBehaviour
 
     private void FixedUpdate()
     {
+       
+
 
         if (isAlly)
         {
@@ -360,7 +385,7 @@ public class Unit : MonoBehaviour
 
             if (isAlly)
             {
-
+                
                 if (collision.transform == currentTarget)
                 {
                     
@@ -399,14 +424,16 @@ public class Unit : MonoBehaviour
                     {
                         if (collision.transform != currentTarget)
                         {
-
+                            if(currentTarget.tag != "King")
+                            {
+                                currentTarget = collision.transform; 
+                            }
                             
                             collision.transform.GetComponent<Unit>().TakeDamage(attackDamage);
                         }
                         else
                         {
 
-                            
                             currentTarget.GetComponent<Unit>().TakeDamage(attackDamage);
                         }
                     }

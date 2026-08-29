@@ -105,6 +105,7 @@ GameObject:
   - component: {fileID: 699493836916552040}
   - component: {fileID: 1460706644783987845}
   - component: {fileID: 5931195531653366680}
+  - component: {fileID: 6380372347616147448}
   m_Layer: 0
   m_Name: Golem
   m_TagString: Untagged
@@ -262,6 +263,29 @@ MonoBehaviour:
   rangedUnit: 0
   simpleFlash: {fileID: 354201996133010045}
   unitDeath: {fileID: 5944605653565320088, guid: 96c8f79dbe9d22b489a96e247817780a, type: 3}
+  projectileObject: {fileID: 0}
+--- !u!95 &6380372347616147448
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6445791717490607705}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a6a2be3585598964793f88fb205d86f1, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &7691328478946151822
 GameObject:
   m_ObjectHideFlags: 0
