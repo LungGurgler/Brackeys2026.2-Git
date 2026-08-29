@@ -1,11 +1,14 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class KingController : MonoBehaviour
 {
 
-    public static KingController Instance; 
+    public static KingController Instance;
+
+    public UnityEvent kingHurt;
     public Vector2 kingPosition { get { return transform.position; } }
     public Rigidbody2D rb;
 
@@ -54,8 +57,8 @@ public class KingController : MonoBehaviour
         float clampedY = Mathf.Clamp(transform.position.y, -5f * scale, 5f * scale);
 
         transform.position = new Vector2(clampedX, clampedY); 
-        //8.75f: x
-        //5f: y
+        
+       
     }
 
     public void TakeDamage(float damage)
@@ -64,6 +67,7 @@ public class KingController : MonoBehaviour
         {
             StartCoroutine(changeHealth(currentHealth, currentHealth - damage));
             currentHealth -= damage;
+            kingHurt.Invoke();
             
             //StartCoroutine(StartCameraShake()); 
             currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);

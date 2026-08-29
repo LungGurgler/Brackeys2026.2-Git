@@ -42,13 +42,13 @@ TagManager:
   - 
   m_SortingLayers:
   - name: Background
-    uniqueID: 2477031443
+    uniqueID: 2349413619
     locked: 0
   - name: Default
     uniqueID: 0
     locked: 0
   - name: Weapon
-    uniqueID: 2346322471
+    uniqueID: 3916271143
     locked: 0
   m_RenderingLayers:
   - Default
