@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: be4bdf8f0100d7d43b9d4ecb01f480e4
+guid: b199313d364236940be86a2c76828f31
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4629613613065720279
-    second: Frame 15_0
+      213: 8633688621713373015
+    second: WizardGarrison_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -51,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 250
+  spritePixelsToUnits: 100
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Frame 15_0
+      name: WizardGarrison_0
       rect:
         serializedVersion: 2
-        x: 16
-        y: 13
-        width: 66
-        height: 76
+        x: 171
+        y: 70
+        width: 565
+        height: 759
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 92ea7e992fe40cfb0800000000000000
-      internalID: -4629613613065720279
+      spriteID: 757be86ee0601d770800000000000000
+      internalID: 8633688621713373015
       vertices: []
       indices: 
       edges: []
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Frame 15_0: -4629613613065720279
+      WizardGarrison_0: 8633688621713373015
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

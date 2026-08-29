@@ -6,12 +6,12 @@ public static class SpriteLib
 
     private static readonly Dictionary<UnitType, string> SpritePath = new()
     {
-        [UnitType.Farmer] = "UnitSprites/Farmer",
-        [UnitType.Knight] = "UnitSprites/Knight",
-        [UnitType.GoldKnight] = "UnitSprites/GoldKnight",
-        [UnitType.Golem] = "UnitSprites/Golem",
-        [UnitType.Archer] = "UnitSprites/Archer",
-        [UnitType.Wizard] = "UnitSprites/Wizard",
+        [UnitType.Farmer] = "UnitSprites/FarmerGarrison",
+        [UnitType.Knight] = "UnitSprites/KnightGarrison",
+        [UnitType.GoldKnight] = "UnitSprites/GoldenKnightGarrison",
+        [UnitType.Golem] = "UnitSprites/GolemGarrison",
+        [UnitType.Archer] = "UnitSprites/ArcherGarrison",
+        [UnitType.Wizard] = "UnitSprites/WizardGarrison",
     };
 
     public static Sprite getUnitSprite(UnitType key)
