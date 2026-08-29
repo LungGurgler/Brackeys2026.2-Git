@@ -68,6 +68,10 @@ public class Unit : MonoBehaviour
 
     [SerializeField]
     private Transform projectileObject;
+    [SerializeField]
+    private LineRenderer wizardLine;
+    [SerializeField]
+    private Transform wizardOrb;
 
     private bool flipped = false; 
 
@@ -78,6 +82,7 @@ public class Unit : MonoBehaviour
         hitCollider = gameObject.GetComponent<BoxCollider2D>();
         currentHealth = MaximumHealth;
         gameObject.TryGetComponent<Animator>(out anim);
+        gameObject.TryGetComponent(out wizardLine);
     }
 
 
@@ -214,11 +219,7 @@ public class Unit : MonoBehaviour
     private void RangedUnitAttack()
     {
 
-        if (anim)
-        {
-            anim.SetTrigger("Attacking");
-        }
-
+       
         switch (unitType)
         {
             case UnitType.Archer:
@@ -228,35 +229,7 @@ public class Unit : MonoBehaviour
 
 
             case UnitType.Wizard:
-
-                SoundManager.Instance.PlaySFX(SFXKeys.WizardShoot, 1f);
-                Debug.DrawRay(transform.position, currentTarget.position - transform.position, Color.green, 0.25f);
-                foreach (RaycastHit2D hitInfo in Physics2D.RaycastAll(transform.position, currentTarget.position - transform.position, 5f))
-                {
-
-                    if(hitInfo.collider is CircleCollider2D)
-                    {
-                        continue;
-                    }
-                    if (isAlly)
-                    {
-                        if (hitInfo.transform.tag == "EnemyUnit")
-                        {
-                            hitInfo.collider.GetComponent<Unit>().TakeDamage(attackDamage);
-                        }
-                    }
-                    else
-                    {
-                        if (hitInfo.collider.tag == "King")
-                        {
-                            KingController.Instance.TakeDamage(attackDamage);
-                        }
-                        else if (hitInfo.collider.tag == "PlayerUnit")
-                        {
-                            hitInfo.collider.GetComponent<Unit>().TakeDamage(attackDamage);
-                        }
-                    }
-                }
+                StartCoroutine(drawWizardLine());
                 break;
             case UnitType.Catapult:
 
@@ -549,6 +522,59 @@ public class Unit : MonoBehaviour
         
     }
 
+
+    private IEnumerator drawWizardLine()
+    {
+        if (anim)
+        {
+            anim.SetTrigger("Attacking");
+        }
+        SoundManager.Instance.PlaySFX(SFXKeys.WizardShoot, 1f);
+        Vector2 startPos = wizardOrb.position;
+        Vector2 endPos = currentTarget.position;
+        wizardLine.positionCount = 2; 
+        wizardLine.widthMultiplier = 0.25f;
+        wizardLine.startColor = Color.green;
+        wizardLine.endColor = Color.green;
+        wizardLine.rendererPriority = 10000; 
+        wizardLine.SetPosition(0, startPos);
+        float elapsedTime = 0f;
+        while (elapsedTime < 0.25f)
+        {
+            elapsedTime += Time.deltaTime;
+            wizardLine.SetPosition(1, Vector2.Lerp(startPos, endPos, elapsedTime / 0.25f));
+            yield return new WaitForEndOfFrame();
+        }
+        
+        foreach (RaycastHit2D hitInfo in Physics2D.RaycastAll(transform.position, endPos - (Vector2) transform.position, 5f))
+        {
+
+            if (hitInfo.collider is CircleCollider2D)
+            {
+                continue;
+            }
+            if (isAlly)
+            {
+                if (hitInfo.transform.tag == "EnemyUnit")
+                {
+                    hitInfo.collider.GetComponent<Unit>().TakeDamage(attackDamage);
+                }
+            }
+            else
+            {
+                if (hitInfo.collider.tag == "King")
+                {
+                    KingController.Instance.TakeDamage(attackDamage);
+                }
+                else if (hitInfo.collider.tag == "PlayerUnit")
+                {
+                    hitInfo.collider.GetComponent<Unit>().TakeDamage(attackDamage);
+                }
+            }
+
+        }
+        wizardLine.positionCount = 0; 
+    }
 
     private float DistanceToKing()
     {

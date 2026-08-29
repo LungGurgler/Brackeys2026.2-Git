@@ -22,11 +22,11 @@ public class WaveManager : MonoBehaviour
     private Dictionary<UnitType, int> unitMinWave = new()
     {
         [UnitType.Farmer] = 1,
-        [UnitType.Archer] = 4,
+        [UnitType.Archer] = 6,
         [UnitType.Knight] = 3,
-        [UnitType.Golem] = 4,
-        [UnitType.GoldKnight] = 5,
-        [UnitType.Wizard] = 6,
+        [UnitType.Golem] = 5,
+        [UnitType.GoldKnight] = 7,
+        [UnitType.Wizard] = 8,
       
 
     };
@@ -113,6 +113,8 @@ public class WaveManager : MonoBehaviour
 
     public void startWave()
     {
+        //wave 2 is wave 1. 
+
         waveActive = true;
         waveText.text = "Wave " + (currentWave - 1); 
         if (currentWave == 1)
@@ -125,17 +127,27 @@ public class WaveManager : MonoBehaviour
         }
         else
         {
-            int availablePoints = Mathf.FloorToInt(garrisonValue * 1.5f);
+            int availablePoints;
+            if (currentWave >= 4)
+            {
+                availablePoints = Mathf.FloorToInt(garrisonValue * 1.25f);
+            }
+            else
+            {
+                availablePoints = Mathf.FloorToInt(garrisonValue * 1.5f);
+            } 
+
             while (availablePoints > 0)
             {
                 List<UnitType> validUnits = new List<UnitType>();
 
                 foreach (var item in unitGarrisonValue)
                 {
-                    if (item.Key == UnitType.Farmer && currentWave >= 10)
+                    if (item.Key == UnitType.Farmer && currentWave >= 10 - 1)
                     {
                         continue;
                     }
+                   
 
                     if (unitMinWave[item.Key] <= currentWave - 1)
                     {
@@ -145,10 +157,17 @@ public class WaveManager : MonoBehaviour
                         }
                     }
                 }
-
-                UnitType unit = validUnits[Random.Range(0, validUnits.Count)];
-                UnitController.Instance.SpawnEnemies(unit, 1);
-                availablePoints -= unitGarrisonValue[unit];
+     
+                if (validUnits.Count > 0)
+                {
+                    UnitType unit = validUnits[Random.Range(0, validUnits.Count)];
+                    UnitController.Instance.SpawnEnemies(unit, 1);
+                    availablePoints -= unitGarrisonValue[unit];
+                }
+                else
+                {
+                    availablePoints = 0;
+                }
             }
         }
         UnitController.Instance.SpawnTraitors();
