@@ -27,10 +27,10 @@ public class DamageNumberController : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.U))
-        {
-            SpawnDamage(57f, new Vector3(4, 3, 0));
-        }
+        // if(Input.GetKeyDown(KeyCode.U))
+        // {
+        //     SpawnDamage(57f, new Vector3(4, 3, 0));
+        // }
     }
 
     public void SpawnDamage(float damageAmount, Vector3 location)
