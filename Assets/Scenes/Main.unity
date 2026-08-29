@@ -3142,6 +3142,25 @@ PlayableDirector:
     value: {fileID: 1259715723}
   m_ExposedReferences:
     m_References: []
+--- !u!1 &1100905229 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6152367088894631683, guid: 954e76678e9b9a64f8ddc3c7a55b7a62, type: 3}
+  m_PrefabInstance: {fileID: 1991715443}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1100905232
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1100905229}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d0672e503abca5408f8a694543266ad, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BarthaSzabolcs.Tutorial_SpriteFlash.SimpleFlash
+  flashMaterial: {fileID: 2100000, guid: c26478dcb291b54499768c8a30104330, type: 2}
+  duration: 0.2
 --- !u!1 &1108582902
 GameObject:
   m_ObjectHideFlags: 0
@@ -5890,6 +5909,10 @@ PrefabInstance:
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5512052825777868471, guid: 954e76678e9b9a64f8ddc3c7a55b7a62, type: 3}
+      propertyPath: simpleFlash
+      value: 
+      objectReference: {fileID: 1100905232}
+    - target: {fileID: 5512052825777868471, guid: 954e76678e9b9a64f8ddc3c7a55b7a62, type: 3}
       propertyPath: kingHurt.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -5940,7 +5963,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6152367088894631683, guid: 954e76678e9b9a64f8ddc3c7a55b7a62, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1100905232}
   m_SourcePrefab: {fileID: 100100000, guid: 954e76678e9b9a64f8ddc3c7a55b7a62, type: 3}
 --- !u!1 &2001702593
 GameObject:

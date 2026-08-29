@@ -2,6 +2,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Events;
+using BarthaSzabolcs.Tutorial_SpriteFlash;
 
 public class KingController : MonoBehaviour
 {
@@ -20,6 +21,9 @@ public class KingController : MonoBehaviour
     [SerializeField] private Transform orbit;
 
     [SerializeField] private Image healthBar;
+
+    [Header("Unit Effects")]
+    [SerializeField] private SimpleFlash simpleFlash;
 
     private void Awake()
     {
@@ -62,6 +66,8 @@ public class KingController : MonoBehaviour
             StartCoroutine(changeHealth(currentHealth, currentHealth - damage));
             currentHealth -= damage;
             kingHurt.Invoke();
+            if (simpleFlash)
+                simpleFlash.Flash();
 
             //StartCoroutine(StartCameraShake());
             currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
