@@ -89,6 +89,7 @@ MonoBehaviour:
   rangedUnit: 0
   simpleFlash: {fileID: 3047313290954089439}
   projectileObject: {fileID: 0}
+  unitDeath: {fileID: 5944605653565320088, guid: 96c8f79dbe9d22b489a96e247817780a, type: 3}
 --- !u!61 &7778207019834233139
 BoxCollider2D:
   m_ObjectHideFlags: 0
