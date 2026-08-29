@@ -1,22 +1,25 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 public class KingController : MonoBehaviour
 {
 
-    public static KingController Instance; 
+    public static KingController Instance;
+    
+    public UnityEvent kingHurt;
     public Vector2 kingPosition { get { return transform.position; } }
     public Rigidbody2D rb;
 
     [SerializeField] private float maxHealth;
-    private float currentHealth; 
+    private float currentHealth;
 
     [SerializeField] private float moveSpeed = 7.5f;
 
     [SerializeField] private Transform orbit;
 
-    [SerializeField] private Image healthBar; 
+    [SerializeField] private Image healthBar;
 
     private void Awake()
     {
@@ -26,7 +29,7 @@ public class KingController : MonoBehaviour
         }
         else
         {
-            Instance = this; 
+            Instance = this;
         }
 
         initPlayer();
@@ -34,12 +37,12 @@ public class KingController : MonoBehaviour
 
     private void Start()
     {
-        rb = gameObject.GetComponent<Rigidbody2D>();   
+        rb = gameObject.GetComponent<Rigidbody2D>();
     }
 
     private void Update()
     {
-       
+
         Vector2 move = Vector2.zero;
 
         move.x = Input.GetAxisRaw("Horizontal");
@@ -50,7 +53,7 @@ public class KingController : MonoBehaviour
 
     private void FixedUpdate()
     {
-      
+
     }
     public void TakeDamage(float damage)
     {
@@ -58,8 +61,9 @@ public class KingController : MonoBehaviour
         {
             StartCoroutine(changeHealth(currentHealth, currentHealth - damage));
             currentHealth -= damage;
-            
-            //StartCoroutine(StartCameraShake()); 
+            kingHurt.Invoke();
+
+            //StartCoroutine(StartCameraShake());
             currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
             if (currentHealth <= 0)
             {
@@ -70,34 +74,34 @@ public class KingController : MonoBehaviour
 
     private IEnumerator changeHealth(float oldHealth, float newHealth)
     {
-        
+
         while (healthBar.fillAmount != newHealth/maxHealth)
         {
             healthBar.fillAmount = Mathf.Lerp(oldHealth/maxHealth,newHealth/maxHealth,Time.unscaledDeltaTime);
-           
+
             yield return new WaitForEndOfFrame();
         }
 
     }
 
-    
+
     void initPlayer()
     {
-        currentHealth = maxHealth; 
+        currentHealth = maxHealth;
     }
 
     private IEnumerator StartCameraShake()
     {
         Camera cam = Camera.main;
         Vector2 pos = cam.transform.position;
-        float elapsedTime = 0f; 
+        float elapsedTime = 0f;
         while(elapsedTime < 0.25)
         {
             elapsedTime += Time.deltaTime;
-            cam.transform.position = pos + Random.insideUnitCircle * 0.15f; 
+            cam.transform.position = pos + Random.insideUnitCircle * 0.15f;
             yield return new WaitForEndOfFrame();
         }
-        cam.transform.position = pos; 
+        cam.transform.position = pos;
     }
 
 
