@@ -64,13 +64,18 @@ public class Unit : MonoBehaviour
     [SerializeField] private SimpleFlash simpleFlash;
 
 
+    [SerializeField]
+    private Transform projectileObject;
+
+
+
     private void Awake()
     {
         rb = gameObject.GetComponent<Rigidbody2D>();
         hitRadius = gameObject.GetComponent<CircleCollider2D>();
         hitCollider = gameObject.GetComponent<BoxCollider2D>();
-        currentHealth = MaximumHealth; 
-        
+        currentHealth = MaximumHealth;
+        gameObject.TryGetComponent<Animator>(out anim);
     }
 
 
@@ -130,24 +135,28 @@ public class Unit : MonoBehaviour
                 if (unitType == UnitType.Catapult || unitType == UnitType.Archer || unitType == UnitType.Wizard)
                 {
                     rb.linearVelocity = Vector2.zero;
-                } else
+                    
+                } 
+                else
                 {
                     rb.linearVelocity = (currentTarget.position - transform.position) * moveSpeed * Time.deltaTime * 5f;
+                   
                 }
             }
             else
             {
                 rb.linearVelocity = (KingController.Instance.kingPosition - (Vector2)transform.position) * moveSpeed * Time.deltaTime * 5f;
+             
             }
         }
 
-        if (anim) {
-            if (rb.linearVelocity == Vector2.zero) {
-                anim.SetBool("isWalking", true);
-            } else {
-                anim.SetBool("isWalking", false);
-            }
-        }
+        //if (anim) {
+        //    if (rb.linearVelocity != Vector2.zero) {
+        //        anim.SetBool("isWalking", true);
+        //    } else {
+        //      anim.SetBool("isWalking", false);
+        //    }
+        //}
     }
 
     private void ProcessAllyMovement()
@@ -157,6 +166,7 @@ public class Unit : MonoBehaviour
             if (Vector2.Distance(currentTarget.position, transform.position) < DistanceToKing()) //checks if the target is closer than the king
             {
                 rb.linearVelocity = (currentTarget.position - transform.position) * moveSpeed * Time.deltaTime * 5f; //moves to the target if so
+
             }
             else
             {
@@ -164,27 +174,29 @@ public class Unit : MonoBehaviour
             }
 
         }
-        else
+        else 
         {
-            rb.linearVelocity = (KingController.Instance.kingPosition + positionOffset - (Vector2)transform.position) * moveSpeed * 5f;
+          
+                rb.linearVelocity = (KingController.Instance.kingPosition + positionOffset - (Vector2)transform.position) * moveSpeed * 5f;
+           
         }
+
+
     }
 
     private void RangedUnitAttack()
     {
 
+        if (anim)
+        {
+            anim.SetTrigger("Attacking");
+        }
+
         switch (unitType)
         {
             case UnitType.Archer:
-                Debug.DrawLine(transform.position, currentTarget.position, Color.red, 0.3f);
-                if (currentTarget.tag == "King")
-                {
-                    KingController.Instance.TakeDamage(attackDamage);
-                }
-                else
-                {
-                    currentTarget.GetComponent<Unit>().TakeDamage(attackDamage);
-                }
+                
+                StartCoroutine(ShootArrow());
                 break;
 
 
@@ -268,6 +280,11 @@ public class Unit : MonoBehaviour
     IEnumerator StartAttackCooldown()
     {
         yield return new WaitForSeconds(attackCooldown);
+        if(UnitType == UnitType.Archer)
+        {
+           
+            projectileObject.gameObject.SetActive(true); 
+        }
         attackReady = true;
     }
 
@@ -337,14 +354,21 @@ public class Unit : MonoBehaviour
 
         if (attackReady && !rangedUnit)
         {
-               
+
+
             if (isAlly)
             {
+
                 if (collision.transform == currentTarget)
                 {
+
                     currentTarget.GetComponent<Unit>().TakeDamage(attackDamage);
                     attackReady = false;
                     StartCoroutine(StartAttackCooldown());
+                    if (anim)
+                    {
+                        anim.SetTrigger("Attacking");
+                    }
                 }
             }
             else
@@ -353,6 +377,8 @@ public class Unit : MonoBehaviour
                 {
                     if(collision.transform.tag == "King")
                     {
+
+                        
                         KingController.Instance.TakeDamage(attackDamage);
 
                     }
@@ -360,15 +386,23 @@ public class Unit : MonoBehaviour
                     {
                         if (collision.transform != currentTarget)
                         {
+
+                            
                             collision.transform.GetComponent<Unit>().TakeDamage(attackDamage);
                         }
                         else
                         {
+
+                            
                             currentTarget.GetComponent<Unit>().TakeDamage(attackDamage);
                         }
                     }
                     attackReady = false;
                     StartCoroutine(StartAttackCooldown());
+                    if (anim)
+                    {
+                        anim.SetTrigger("Attacking");
+                    }
                 }
             }
           
@@ -436,6 +470,37 @@ public class Unit : MonoBehaviour
         baseAttackDamage /= 10;
         baseMaximumHealth /= 2;
         currentHealth = baseMaximumHealth; 
+        
+    }
+
+    private IEnumerator ShootArrow()
+    {
+        Vector2 ogPos = projectileObject.transform.position;
+        Vector2 target = currentTarget.position;
+        float elapsedTime = 0f;
+        Vector2 targetRot = ogPos - target;
+        projectileObject.up = targetRot; 
+        while(elapsedTime < 0.1f)
+        {
+            elapsedTime += Time.deltaTime; 
+            projectileObject.transform.position = Vector2.Lerp(ogPos, target, elapsedTime/0.25f);
+            yield return new WaitForEndOfFrame();
+        }
+        if (currentTarget != null)
+        {
+            if (currentTarget.tag == "King")
+            {
+                KingController.Instance.TakeDamage(attackDamage);
+            }
+            else
+            {
+                currentTarget.GetComponent<Unit>().TakeDamage(attackDamage);
+            }
+        }
+        projectileObject.transform.up = Vector2.right;
+        projectileObject.transform.position = ogPos;
+       
+
         
     }
 

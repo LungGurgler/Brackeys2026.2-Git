@@ -61,17 +61,7 @@ public class UnitController : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.J))
-        {
-            GameObject unit = UnitLib.getUnit(UnitType.Archer);
-            spawnPlayerUnit(unit);
-        }
-        if (Input.GetKeyDown(KeyCode.U))
-        {
-            SpawnPlayerUnits(5, UnitType.Archer);
-        }
-
-
+       
         if (Input.GetKeyDown(KeyCode.X))
         {
             ResetPlayerUnitPos();
