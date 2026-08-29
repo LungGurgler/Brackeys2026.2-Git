@@ -69,6 +69,7 @@ public class KingController : MonoBehaviour
         {
             StartCoroutine(changeHealth(currentHealth, currentHealth - damage));
             currentHealth -= damage;
+            SoundManager.Instance.PlaySFX(SFXKeys.UnitHurt, 1.5f);
             kingHurt.Invoke();
             if (simpleFlash)
                 simpleFlash.Flash();
