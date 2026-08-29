@@ -12,6 +12,7 @@ public enum SFXKeys
     WizardShoot,
     LoseGame,
     UnitHurt,
+    IntroFanfare,
 }
 
 public static class SFXLib
@@ -27,6 +28,7 @@ public static class SFXLib
         [SFXKeys.WizardShoot] = "Sounds/SFX/Game/Units/wizardShoot",
         [SFXKeys.LoseGame] = "Sounds/SFX/Game/loseGame",
         [SFXKeys.UnitHurt] = "Sounds/SFX/Game/Units/Hurt/hurt2",
+        [SFXKeys.IntroFanfare] = "Sounds/SFX/Game/introFanfare",
     };
 
     public static AudioClip getSoundClip(SFXKeys key)

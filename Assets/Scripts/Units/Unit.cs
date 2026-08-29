@@ -60,8 +60,10 @@ public class Unit : MonoBehaviour
     private Transform currentTarget;
     List<Transform> validTargets = new List<Transform>();
 
+    [Header("Unit Effects")]
     // [SerializeField] private SimpleFlash simpleFlash;
     [SerializeField] private SimpleFlash simpleFlash;
+    [SerializeField] private GameObject unitDeath;
 
 
     [SerializeField]
@@ -433,6 +435,9 @@ public class Unit : MonoBehaviour
             UnitController.Instance.RemoveEnemyUnit(this);
         }
 
+        if (unitDeath) {
+            Instantiate(unitDeath, transform.position, transform.rotation);
+        }
         SoundManager.Instance.PlaySFX(SFXKeys.UnitKilled, 0.5f);
         Destroy(gameObject);
 
