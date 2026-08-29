@@ -253,6 +253,7 @@ public class Unit : MonoBehaviour
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
+        SoundManager.Instance.PlaySFX(SFXKeys.UnitHurt, 1.5f);
         if (simpleFlash)
             simpleFlash.Flash();
         
@@ -387,7 +388,8 @@ public class Unit : MonoBehaviour
             UnitController.Instance.RemoveEnemyUnit(this);
         }
 
-            Destroy(gameObject);
+        SoundManager.Instance.PlaySFX(SFXKeys.UnitKilled, 0.5f);
+        Destroy(gameObject);
 
     }
 
