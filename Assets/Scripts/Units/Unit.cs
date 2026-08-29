@@ -190,7 +190,7 @@ public class Unit : MonoBehaviour
 
             case UnitType.Wizard:
 
-
+                SoundManager.Instance.PlaySFX(SFXKeys.WizardShoot, 1f);
                 Debug.DrawRay(transform.position, currentTarget.position - transform.position, Color.green, 0.25f);
                 foreach (RaycastHit2D hitInfo in Physics2D.RaycastAll(transform.position, currentTarget.position - transform.position, 5f))
                 {
@@ -253,6 +253,7 @@ public class Unit : MonoBehaviour
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
+        SoundManager.Instance.PlaySFX(SFXKeys.UnitHurt, 1.5f);
         if (simpleFlash)
             simpleFlash.Flash();
         
@@ -387,7 +388,8 @@ public class Unit : MonoBehaviour
             UnitController.Instance.RemoveEnemyUnit(this);
         }
 
-            Destroy(gameObject);
+        SoundManager.Instance.PlaySFX(SFXKeys.UnitKilled, 0.5f);
+        Destroy(gameObject);
 
     }
 
@@ -431,7 +433,7 @@ public class Unit : MonoBehaviour
     
     public void SetTraitor()
     {
-        baseAttackDamage /= 2;
+        baseAttackDamage /= 10;
         baseMaximumHealth /= 2;
         currentHealth = baseMaximumHealth; 
         

@@ -140,7 +140,7 @@ public class UnitTrustManager : MonoBehaviour
     public void ApplyDebuffButton(int num)
     {
         ApplyDebuff(debuffs[num]);
-        TrustParent.gameObject.SetActive(false);
+        // TrustParent.gameObject.SetActive(false);
         WaveManager.Instance.startWave();
     } 
 

@@ -165,6 +165,7 @@ public class WaveManager : MonoBehaviour
     {
         waveActive = false;
         currentWave++;
+        SoundManager.Instance.PlaySFX(SFXKeys.WaveOver, 1.0f);
         BeginGarrison();
         UnitController.Instance.ResetPlayerUnitPos();
     }

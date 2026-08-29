@@ -16,4 +16,4 @@ MonoBehaviour:
   targetUnit: 0
   targetValue: 4
   value: 1
-  debuffSprite: {fileID: -9187736095712527158, guid: c7e89492353d2664083d430a543618ba, type: 3}
+  debuffSprite: {fileID: 7016668658330468391, guid: b839048f0a7b4af4aaf320dce35c15bb, type: 3}

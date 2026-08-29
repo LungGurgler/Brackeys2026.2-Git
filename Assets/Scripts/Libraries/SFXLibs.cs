@@ -7,6 +7,11 @@ public enum SFXKeys
 {
     MenuBtnPressed,
     UIButtonHover,
+    WaveOver,
+    UnitKilled,
+    WizardShoot,
+    LoseGame,
+    UnitHurt,
 }
 
 public static class SFXLib
@@ -17,6 +22,11 @@ public static class SFXLib
     {
         [SFXKeys.MenuBtnPressed] = "Sounds/SFX/UI_Buttons/Retro8",
         [SFXKeys.UIButtonHover] = "Sounds/SFX/UI_Buttons/Retro2",
+        [SFXKeys.WaveOver] = "Sounds/SFX/Game/waveOver",
+        [SFXKeys.UnitKilled] = "Sounds/SFX/Game/Units/unitKilled",
+        [SFXKeys.WizardShoot] = "Sounds/SFX/Game/Units/wizardShoot",
+        [SFXKeys.LoseGame] = "Sounds/SFX/Game/loseGame",
+        [SFXKeys.UnitHurt] = "Sounds/SFX/Game/Units/Hurt/hurt2",
     };
 
     public static AudioClip getSoundClip(SFXKeys key)
