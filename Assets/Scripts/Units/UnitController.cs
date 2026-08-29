@@ -31,16 +31,17 @@ public class UnitController : MonoBehaviour
 
     [SerializeField]
     private Transform[] enemySpawnPoints = new Transform[8];
-    private Vector2[] originalEnemySpawnPos = new Vector2[8]; 
-
+    private Vector2[] originalEnemySpawnPos = new Vector2[8];
+ 
     public int playerUnitsDead { get; private set; } = 0;  
    
 
     [SerializeField]
     private Transform enemyParent;
     private Camera cam;
+    public float camScale { private set; get; } = 1f; 
 
- 
+  
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -53,6 +54,7 @@ public class UnitController : MonoBehaviour
         }
 
         cam = Camera.main;
+
         for(int i = 0; i < originalEnemySpawnPos.Length; i++)
         {
             originalEnemySpawnPos[i] = enemySpawnPoints[i].position;
@@ -61,7 +63,7 @@ public class UnitController : MonoBehaviour
 
     private void Update()
     {
-       
+        cam.WorldToScreenPoint(transform.position);
         if (Input.GetKeyDown(KeyCode.X))
         {
             ResetPlayerUnitPos();
@@ -91,6 +93,7 @@ public class UnitController : MonoBehaviour
 
     private void setSpawnPositions(float multiplier)
     {
+        camScale = multiplier;
         for(int i = 0; i < enemySpawnPoints.Length; i++)
         {
             enemySpawnPoints[i].position = originalEnemySpawnPos[i] * multiplier; 

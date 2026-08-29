@@ -203,6 +203,7 @@ public class UnitTrustManager : MonoBehaviour
     }
     private void shuffleDebuffs()
     {
+       
         for (int i = debuffs.Count - 1; i >= 0; i--)
         {
             int j = Random.Range(0, i);
@@ -211,7 +212,25 @@ public class UnitTrustManager : MonoBehaviour
             debuffs[j] = temp;
         }
 
+        if (WaveManager.Instance.currentWave < 10)
+        {
+            debuffs.Sort(FarmerSort);
+        }
+
    
+    }
+
+    private int FarmerSort(TrustDebuff A, TrustDebuff B)
+    {
+        if(A.targetUnit == UnitType.Farmer && B.targetUnit != UnitType.Farmer)
+        {
+            return 1;
+        }
+        else if (A.targetUnit == UnitType.Farmer && B.targetUnit != UnitType.Farmer)
+        {
+            return -1;
+        }
+        return 0; 
     }
 
     

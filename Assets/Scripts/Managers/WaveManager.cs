@@ -11,8 +11,8 @@ public class WaveManager : MonoBehaviour
 {
     public static WaveManager Instance; 
    
-    [SerializeField]
-    private int currentWave = 1;
+   
+    public int currentWave { private set; get; } = 1;
     [SerializeField]
     private bool waveActive = false; 
 
@@ -22,7 +22,7 @@ public class WaveManager : MonoBehaviour
     private Dictionary<UnitType, int> unitMinWave = new()
     {
         [UnitType.Farmer] = 1,
-        [UnitType.Archer] = 2,
+        [UnitType.Archer] = 4,
         [UnitType.Knight] = 3,
         [UnitType.Golem] = 4,
         [UnitType.GoldKnight] = 5,
@@ -117,7 +117,7 @@ public class WaveManager : MonoBehaviour
         waveText.text = "Wave " + (currentWave - 1); 
         if (currentWave == 1)
         {
-            UnitController.Instance.SpawnPlayerUnits(5, UnitType.Farmer);
+            UnitController.Instance.SpawnPlayerUnits(10, UnitType.Farmer);
         }
         if (currentWave - 1 == 1)
         {
@@ -125,7 +125,7 @@ public class WaveManager : MonoBehaviour
         }
         else
         {
-            int availablePoints = Mathf.FloorToInt(garrisonValue * Mathf.Pow(1.01f, currentWave - 1));
+            int availablePoints = Mathf.FloorToInt(garrisonValue * 1.5f);
             while (availablePoints > 0)
             {
                 List<UnitType> validUnits = new List<UnitType>();
@@ -135,11 +135,6 @@ public class WaveManager : MonoBehaviour
                     if (item.Key == UnitType.Farmer && currentWave >= 10)
                     {
                         continue;
-                    }
-
-                    if(item.Key == UnitType.Golem)
-                    {
-                        continue; 
                     }
 
                     if (unitMinWave[item.Key] <= currentWave - 1)
@@ -244,10 +239,16 @@ public class WaveManager : MonoBehaviour
         List<UnitType> validUnits = new List<UnitType>();
         foreach (var item in unitGarrisonValue)
         {
+            if (item.Key == UnitType.Farmer && currentWave >= 10)
+            {
+                continue; 
+            }
             if (unitGarrisonValue[item.Key] <= garrisonValue)
             {
                 validUnits.Add(item.Key);
             }
+
+            
         }
         validUnits = shuffle(validUnits); 
 
@@ -291,7 +292,6 @@ public class WaveManager : MonoBehaviour
 
    private IEnumerator StartDelay(float duration)
     {
-        print("waiting!");
         yield return new WaitForSecondsRealtime(duration);
         StartCoroutine(loadScene(0));
     }

@@ -16,7 +16,10 @@ public class KingController : MonoBehaviour
 
     [SerializeField] private Transform orbit;
 
-    [SerializeField] private Image healthBar; 
+    [SerializeField] private Image healthBar;
+
+    private Vector2 screenBounds; 
+
 
     private void Awake()
     {
@@ -39,19 +42,22 @@ public class KingController : MonoBehaviour
 
     private void Update()
     {
-       
+     
         Vector2 move = Vector2.zero;
 
         move.x = Input.GetAxisRaw("Horizontal");
         move.y = Input.GetAxisRaw("Vertical");
         rb.MovePosition((Vector2) transform.position + move * moveSpeed * Time.deltaTime);
 
+        float scale = UnitController.Instance.camScale;
+        float clampedX = Mathf.Clamp(transform.position.x, -8.75f * scale, 8.75f * scale);
+        float clampedY = Mathf.Clamp(transform.position.y, -5f * scale, 5f * scale);
+
+        transform.position = new Vector2(clampedX, clampedY); 
+        //8.75f: x
+        //5f: y
     }
 
-    private void FixedUpdate()
-    {
-      
-    }
     public void TakeDamage(float damage)
     {
         if (currentHealth > 0)

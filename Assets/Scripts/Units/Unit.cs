@@ -170,14 +170,14 @@ public class Unit : MonoBehaviour
             }
             else
             {
-                rb.linearVelocity = (KingController.Instance.kingPosition + positionOffset - (Vector2)transform.position) * moveSpeed * 5f;
+                rb.linearVelocity = (KingController.Instance.kingPosition + positionOffset - (Vector2)transform.position) * moveSpeed * 5.5f;
             }
 
         }
         else 
         {
           
-                rb.linearVelocity = (KingController.Instance.kingPosition + positionOffset - (Vector2)transform.position) * moveSpeed * 5f;
+                rb.linearVelocity = (KingController.Instance.kingPosition + positionOffset - (Vector2)transform.position) * moveSpeed * 5.5f;
            
         }
 
@@ -361,8 +361,19 @@ public class Unit : MonoBehaviour
 
                 if (collision.transform == currentTarget)
                 {
-
+                    
                     currentTarget.GetComponent<Unit>().TakeDamage(attackDamage);
+                    attackReady = false;
+                    StartCoroutine(StartAttackCooldown());
+                    if (anim)
+                    {
+                        anim.SetTrigger("Attacking");
+                    }
+                } 
+                else if(collision.transform.tag == "EnemyUnit")
+                {
+                    currentTarget = collision.transform; 
+                    currentTarget.transform.GetComponent<Unit>().TakeDamage(attackDamage);
                     attackReady = false;
                     StartCoroutine(StartAttackCooldown());
                     if (anim)
@@ -475,17 +486,20 @@ public class Unit : MonoBehaviour
 
     private IEnumerator ShootArrow()
     {
+        GameObject newProjectile = Instantiate(projectileObject.gameObject, projectileObject.position, projectileObject.rotation, transform);
         Vector2 ogPos = projectileObject.transform.position;
         Vector2 target = currentTarget.position;
         float elapsedTime = 0f;
         Vector2 targetRot = ogPos - target;
-        projectileObject.up = targetRot; 
+        newProjectile.transform.up = targetRot;
+        projectileObject.gameObject.SetActive(false);
         while(elapsedTime < 0.1f)
         {
             elapsedTime += Time.deltaTime; 
-            projectileObject.transform.position = Vector2.Lerp(ogPos, target, elapsedTime/0.25f);
+            newProjectile.transform.position = Vector2.Lerp(ogPos, target, elapsedTime/0.25f);
             yield return new WaitForEndOfFrame();
         }
+        Destroy(newProjectile);
         if (currentTarget != null)
         {
             if (currentTarget.tag == "King")
@@ -497,8 +511,7 @@ public class Unit : MonoBehaviour
                 currentTarget.GetComponent<Unit>().TakeDamage(attackDamage);
             }
         }
-        projectileObject.transform.up = Vector2.right;
-        projectileObject.transform.position = ogPos;
+        projectileObject.gameObject.SetActive(true);
        
 
         
