@@ -40,7 +40,7 @@ public class WaveManager : MonoBehaviour
         [UnitType.Farmer] = 1,
         [UnitType.Knight] = 2,
         [UnitType.GoldKnight] = 4,
-        [UnitType.Golem] = 20,
+        [UnitType.Golem] = 10,
         [UnitType.Archer] = 3,
         [UnitType.Wizard] = 8,
     };
@@ -287,8 +287,9 @@ public class WaveManager : MonoBehaviour
 
     public void SelectGarrison(int num)
     {
-       
-        UnitController.Instance.SpawnPlayerUnits(Mathf.FloorToInt(garrisonValue / unitGarrisonValue[garrisonUnits[num]]), garrisonUnits[num]);
+        
+            UnitController.Instance.SpawnPlayerUnits(Mathf.FloorToInt(garrisonValue / unitGarrisonValue[garrisonUnits[num]]), garrisonUnits[num]);
+        
         //Insert debuffs here!
         UnitTrustManager.Instance.DisplayDebuffs();
     }

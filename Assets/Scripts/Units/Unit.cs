@@ -302,7 +302,7 @@ public class Unit : MonoBehaviour
         {
             if (collision.tag == "King")
             {
-                validTargets.Insert(0,collision.transform);
+                validTargets.Add(collision.transform);
 
             }
             else if (collision.tag == "PlayerUnit")
