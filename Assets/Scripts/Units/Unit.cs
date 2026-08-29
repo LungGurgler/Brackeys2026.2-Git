@@ -397,7 +397,8 @@ public class Unit : MonoBehaviour
                     {
                         if (collision.transform != currentTarget)
                         {
-                            if(currentTarget.tag != "King")
+                            
+                            if(currentTarget == null || currentTarget.tag != "King")
                             {
                                 currentTarget = collision.transform; 
                             }
