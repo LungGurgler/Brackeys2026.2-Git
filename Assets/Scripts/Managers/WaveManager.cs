@@ -1,8 +1,10 @@
 using NUnit.Framework;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class WaveManager : MonoBehaviour
@@ -60,9 +62,16 @@ public class WaveManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI waveText;
     [SerializeField]
-    private TextMeshProUGUI enemiesRemainingText; 
+    private TextMeshProUGUI enemiesRemainingText;
 
 
+    [SerializeField]
+    private Image deathScreenBG;
+    [SerializeField]
+    private TextMeshProUGUI dsHeader;
+    [SerializeField]
+    private TextMeshProUGUI dsBodyText; 
+    
 
     private void Awake()
     {
@@ -110,40 +119,47 @@ public class WaveManager : MonoBehaviour
         {
             UnitController.Instance.SpawnPlayerUnits(5, UnitType.Farmer);
         }
-
-        int availablePoints = Mathf.FloorToInt(garrisonValue * Mathf.Pow(1.01f,currentWave - 1));
-        while (availablePoints > 0)
+        if (currentWave - 1 == 1)
         {
-            List<UnitType> validUnits = new List<UnitType>();
-
-            foreach (var item in unitGarrisonValue)
+            UnitController.Instance.SpawnEnemies(UnitType.Farmer, 5);
+        }
+        else
+        {
+            int availablePoints = Mathf.FloorToInt(garrisonValue * Mathf.Pow(1.01f, currentWave - 1));
+            while (availablePoints > 0)
             {
-                if(item.Key == UnitType.Farmer && currentWave >= 10) 
-                {
-                    continue; 
-                }
+                List<UnitType> validUnits = new List<UnitType>();
 
-                print(validUnits);
-
-                if (unitMinWave[item.Key] <= currentWave - 1)
+                foreach (var item in unitGarrisonValue)
                 {
-                    if (unitGarrisonValue[item.Key] <= availablePoints)
+                    if (item.Key == UnitType.Farmer && currentWave >= 10)
                     {
-                        validUnits.Add(item.Key);
+                        continue;
+                    }
+
+                    if(item.Key == UnitType.Golem)
+                    {
+                        continue; 
+                    }
+
+                    if (unitMinWave[item.Key] <= currentWave - 1)
+                    {
+                        if (unitGarrisonValue[item.Key] <= availablePoints)
+                        {
+                            validUnits.Add(item.Key);
+                        }
                     }
                 }
-            }
 
-            UnitType unit = validUnits[Random.Range(0, validUnits.Count)];
-            UnitController.Instance.SpawnEnemies(unit,1);
-            availablePoints -= unitGarrisonValue[unit]; 
+                UnitType unit = validUnits[Random.Range(0, validUnits.Count)];
+                UnitController.Instance.SpawnEnemies(unit, 1);
+                availablePoints -= unitGarrisonValue[unit];
+            }
         }
-            
         UnitController.Instance.SpawnTraitors();
         
     }
 
-  
 
     public void endWave()
     {
@@ -152,6 +168,74 @@ public class WaveManager : MonoBehaviour
         BeginGarrison();
         UnitController.Instance.ResetPlayerUnitPos();
     }
+
+
+    public void endGame()
+    {
+        deathScreenBG.transform.parent.gameObject.SetActive(true);
+        waveActive = false;
+        Time.timeScale = 0f; 
+        StartCoroutine(startDeathScreen());
+        UnitController.Instance.DestroyAllAllies();
+        
+    }
+
+    private IEnumerator startDeathScreen() 
+    {
+        Color32 targetColour = deathScreenBG.color;
+        Color32 startColour = deathScreenBG.color;
+        startColour.a = 0;
+        deathScreenBG.color = startColour;
+        targetColour.a = 155;
+        float elapsedTime = 0f; 
+        while (elapsedTime < 2f)
+        {
+
+            elapsedTime += Time.unscaledDeltaTime;
+            deathScreenBG.color = Color32.Lerp(startColour, targetColour, elapsedTime / 2f); 
+            yield return new WaitForEndOfFrame();
+        }
+
+        StartCoroutine(startTextDisplay());
+    }
+
+    private IEnumerator startTextDisplay()
+    {
+        Color32 targetColour = dsHeader.color;
+        Color32 startColour = dsHeader.color;
+        startColour.a = 0; 
+        dsHeader.color = startColour; 
+        targetColour.a = 255;
+        float elapsedTime = 0f; 
+        while (elapsedTime < 0.5f)
+        {
+
+            elapsedTime += Time.unscaledDeltaTime;
+            dsHeader.color = Color32.Lerp(startColour,targetColour, elapsedTime / 0.5f);
+            yield return new WaitForEndOfFrame();
+        }
+        StartCoroutine(StartBodyDisplay());
+    }
+
+    private IEnumerator StartBodyDisplay()
+    {
+        Color targetColour = dsBodyText.color;
+        Color startColour = dsBodyText.color;
+        startColour.a = 0f;
+        targetColour.a = 1f;
+        float elpasedTime = 0f; 
+        while (elpasedTime < 0.25f)
+        {
+            elpasedTime += Time.unscaledDeltaTime;
+            dsBodyText.color = Color.Lerp(startColour, targetColour, elpasedTime / 0.25f);
+            yield return new WaitForEndOfFrame();
+        }
+
+        StartCoroutine(StartDelay(1.5f)); 
+       
+    }
+
+
 
     private void BeginGarrison()
     {
@@ -204,5 +288,25 @@ public class WaveManager : MonoBehaviour
         return validUnits; 
     }
 
+   private IEnumerator StartDelay(float duration)
+    {
+        print("waiting!");
+        yield return new WaitForSecondsRealtime(duration);
+        StartCoroutine(loadScene(0));
+    }
+
+    private IEnumerator loadScene(int index)
+    {
+      
+        Time.timeScale = 1f;
+        AsyncOperation loadScene = SceneManager.LoadSceneAsync(index);
+        while (!loadScene.isDone)
+        {
+            yield return new WaitForEndOfFrame();
+        }
+        
+
+      
+    }
     
 }

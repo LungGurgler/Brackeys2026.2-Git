@@ -141,7 +141,6 @@ public class UnitController : MonoBehaviour
 
   
 
-
     public void SpawnEnemies(UnitType unitType, float count)
     {
         GameObject spawnUnit = UnitLib.getUnit(unitType); 
@@ -176,6 +175,19 @@ public class UnitController : MonoBehaviour
 
         ClearTraitors();
     }
+
+    public void DestroyAllAllies()
+    {
+        for(int i = 0; i < activePlayerUnits.Count; i++)
+        {
+            Destroy(activePlayerUnits[i].gameObject);
+        
+        }
+
+        activePlayerUnits.Clear();
+    }
+
+
 
     public void ResetPlayerUnitPos()
     {

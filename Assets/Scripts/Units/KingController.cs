@@ -1,5 +1,6 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class KingController : MonoBehaviour
 {
@@ -13,9 +14,9 @@ public class KingController : MonoBehaviour
 
     [SerializeField] private float moveSpeed = 7.5f;
 
-    [SerializeField] private Transform orbit; 
+    [SerializeField] private Transform orbit;
 
-    
+    [SerializeField] private Image healthBar; 
 
     private void Awake()
     {
@@ -53,16 +54,33 @@ public class KingController : MonoBehaviour
     }
     public void TakeDamage(float damage)
     {
-        currentHealth -= damage;
-        //StartCoroutine(StartCameraShake()); 
-        currentHealth = Mathf.Clamp(currentHealth,0,maxHealth);
-        if(currentHealth <= 0)
+        if (currentHealth > 0)
         {
-           
-            Time.timeScale = 0f; 
+            StartCoroutine(changeHealth(currentHealth, currentHealth - damage));
+            currentHealth -= damage;
+            
+            //StartCoroutine(StartCameraShake()); 
+            currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+            if (currentHealth <= 0)
+            {
+                WaveManager.Instance.endGame();
+            }
         }
     }
 
+    private IEnumerator changeHealth(float oldHealth, float newHealth)
+    {
+        
+        while (healthBar.fillAmount != newHealth/maxHealth)
+        {
+            healthBar.fillAmount = Mathf.Lerp(oldHealth/maxHealth,newHealth/maxHealth,Time.unscaledDeltaTime);
+           
+            yield return new WaitForEndOfFrame();
+        }
+
+    }
+
+    
     void initPlayer()
     {
         currentHealth = maxHealth; 
