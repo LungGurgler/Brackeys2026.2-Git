@@ -193,6 +193,7 @@ MonoBehaviour:
   UnitType: 5
   rangedUnit: 1
   simpleFlash: {fileID: 7325091138997263885}
+  unitDeath: {fileID: 5944605653565320088, guid: 96c8f79dbe9d22b489a96e247817780a, type: 3}
 --- !u!61 &6731205026309086424
 BoxCollider2D:
   m_ObjectHideFlags: 0

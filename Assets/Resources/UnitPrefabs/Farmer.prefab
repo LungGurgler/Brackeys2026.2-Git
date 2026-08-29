@@ -169,6 +169,7 @@ MonoBehaviour:
   UnitType: 0
   rangedUnit: 0
   simpleFlash: {fileID: 8697325306280963958}
+  unitDeath: {fileID: 5944605653565320088, guid: 96c8f79dbe9d22b489a96e247817780a, type: 3}
 --- !u!95 &8176371739408433067
 Animator:
   serializedVersion: 7
