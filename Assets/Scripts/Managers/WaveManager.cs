@@ -63,15 +63,19 @@ public class WaveManager : MonoBehaviour
     private TextMeshProUGUI waveText;
     [SerializeField]
     private TextMeshProUGUI enemiesRemainingText;
-
+    [SerializeField]
+    private TextMeshProUGUI alliesRemainingText; 
 
     [SerializeField]
     private Image deathScreenBG;
     [SerializeField]
     private TextMeshProUGUI dsHeader;
     [SerializeField]
-    private TextMeshProUGUI dsBodyText; 
-    
+    private TextMeshProUGUI dsBodyText;
+
+    private float score; 
+    [SerializeField]
+    private TextMeshProUGUI scoreDisplay; 
 
     private void Awake()
     {
@@ -93,16 +97,11 @@ public class WaveManager : MonoBehaviour
 
     private void Update()
     {
-        if (!waveActive)
-        {
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                startWave();
-            }
-        }
+        
         if (waveActive)
         {
-            enemiesRemainingText.text = UnitController.Instance.ActiveEnemyUnits.Count.ToString(); 
+            enemiesRemainingText.text = UnitController.Instance.ActiveEnemyUnits.Count.ToString();
+            alliesRemainingText.text = UnitController.Instance.ActivePlayerUnits.Count.ToString();
             if (UnitController.Instance.ActiveEnemyUnits.Count <= 0)
             {
               
@@ -128,47 +127,51 @@ public class WaveManager : MonoBehaviour
         else
         {
             int availablePoints;
-            if (currentWave >= 4)
+            if (currentWave <= 4) //before round 3
             {
                 availablePoints = Mathf.FloorToInt(garrisonValue * 1.25f);
             }
-            else
+            else if(currentWave <= 11) //before round 10
             {
                 availablePoints = Mathf.FloorToInt(garrisonValue * 1.5f);
-            } 
-
-            while (availablePoints > 0)
+            } else
             {
-                List<UnitType> validUnits = new List<UnitType>();
+                availablePoints = Mathf.FloorToInt(garrisonValue * 2f);
+            }
+           
 
-                foreach (var item in unitGarrisonValue)
+                while (availablePoints > 0)
                 {
-                    if (item.Key == UnitType.Farmer && currentWave >= 10 - 1)
-                    {
-                        continue;
-                    }
-                   
+                    List<UnitType> validUnits = new List<UnitType>();
 
-                    if (unitMinWave[item.Key] <= currentWave - 1)
+                    foreach (var item in unitGarrisonValue)
                     {
-                        if (unitGarrisonValue[item.Key] <= availablePoints)
+                        if (item.Key == UnitType.Farmer && currentWave >= 10 - 1)
                         {
-                            validUnits.Add(item.Key);
+                            continue;
+                        }
+
+
+                        if (unitMinWave[item.Key] <= currentWave - 1)
+                        {
+                            if (unitGarrisonValue[item.Key] <= availablePoints)
+                            {
+                                validUnits.Add(item.Key);
+                            }
                         }
                     }
+
+                    if (validUnits.Count > 0)
+                    {
+                        UnitType unit = validUnits[Random.Range(0, validUnits.Count)];
+                        UnitController.Instance.SpawnEnemies(unit, 1);
+                        availablePoints -= unitGarrisonValue[unit];
+                    }
+                    else
+                    {
+                        availablePoints = 0;
+                    }
                 }
-     
-                if (validUnits.Count > 0)
-                {
-                    UnitType unit = validUnits[Random.Range(0, validUnits.Count)];
-                    UnitController.Instance.SpawnEnemies(unit, 1);
-                    availablePoints -= unitGarrisonValue[unit];
-                }
-                else
-                {
-                    availablePoints = 0;
-                }
-            }
         }
         UnitController.Instance.SpawnTraitors();
         
@@ -246,8 +249,7 @@ public class WaveManager : MonoBehaviour
             yield return new WaitForEndOfFrame();
         }
 
-        StartCoroutine(StartDelay(1.5f)); 
-       
+        CalculateScore();       
     }
 
 
@@ -328,6 +330,26 @@ public class WaveManager : MonoBehaviour
         
 
       
+    }
+
+    private void CalculateScore()
+    {
+        score = currentWave * 15 + UnitController.Instance.enemiesKilled * 1.25f;
+        StartCoroutine(DisplayScore());
+    }
+
+    private IEnumerator DisplayScore()
+    {
+        float baseScore = 1;
+        scoreDisplay.gameObject.SetActive(true);
+        while (baseScore < score)
+        {
+            baseScore++; 
+            scoreDisplay.text = "SCORE: " + baseScore;
+            yield return new WaitForSecondsRealtime(0.02f);
+        }
+
+        StartCoroutine(StartDelay(7.5f));
     }
     
 }

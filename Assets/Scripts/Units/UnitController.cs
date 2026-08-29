@@ -11,7 +11,9 @@ public class UnitController : MonoBehaviour
     public static UnitController Instance; 
 
 
+
     private List<Unit> activePlayerUnits = new List<Unit>();
+    public List<Unit> ActivePlayerUnits { get { return activePlayerUnits; } }
     private List<Unit> activeEnemyUnits = new List<Unit>();
     public List<Unit> ActiveEnemyUnits { get { return activeEnemyUnits; } }
     private List<Unit> UnitsToSpawnNext = new List<Unit>();
@@ -33,8 +35,11 @@ public class UnitController : MonoBehaviour
     private Transform[] enemySpawnPoints = new Transform[8];
     private Vector2[] originalEnemySpawnPos = new Vector2[8];
  
-    public int playerUnitsDead { get; private set; } = 0;  
-   
+     
+    public int playerUnitsDead { get; private set; } = 0;
+
+    public int enemiesKilled { get; private set; } = 0; 
+
 
     [SerializeField]
     private Transform enemyParent;
@@ -64,10 +69,7 @@ public class UnitController : MonoBehaviour
     private void Update()
     {
         cam.WorldToScreenPoint(transform.position);
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            ResetPlayerUnitPos();
-        }
+        
 
         if (activePlayerUnits.Count < 80)
         {

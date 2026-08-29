@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71aa8239eb3d8dc4fa06d77f7f837c29, type: 3}
   m_Name: Angry Wizards
   m_EditorClassIdentifier: Assembly-CSharp::TrustDebuff
-  description: Enemy Wizards do +1 damage
+  description: Enemy Wizards do +2 damage
   targetUnit: 5
   targetValue: 4
-  value: 1
+  value: 2
   debuffSprite: {fileID: -5857235352791778275, guid: a648392cdb3627a41b77bc441124690a, type: 3}

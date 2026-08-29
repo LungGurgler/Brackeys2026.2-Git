@@ -90,36 +90,7 @@ public class UnitTrustManager : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            print("PlayerUnitAttackSpeedMult");
-            foreach (var item in playerUnitAttackSpeedMult)
-            {
-                print(item);
-            }
-            print("playerUnitDamageDebuff");
-            foreach (var item in playerUnitDamageDebuff)
-            {
-                print(item);
-            }
-            print("playerUnitHealthDebuff");
-            foreach (var item in playerUnitHealthDebuff)
-            {
-                print(item);
-            }
-            print("playerUnitMoveSpeedMult");
-            foreach (var item in playerUnitMoveSpeedMult)
-            {
-                print(item);
-            }
-            print("EnemyUnitAttackDamage");
-            foreach (var item in EnemyUnitDamageBuff)
-            {
-                print(item);
-            }
-
-
-        }
+        
     }
 
 
