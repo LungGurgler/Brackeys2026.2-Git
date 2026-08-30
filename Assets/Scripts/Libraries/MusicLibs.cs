@@ -8,7 +8,7 @@ public enum MusicKeys
     Null,
     ExampleKey,
     ExampleKey2,
-    PlaceholderBGM,
+    BGM,
 }
 
 public static class MusicLib
@@ -19,7 +19,7 @@ public static class MusicLib
     {
         [MusicKeys.ExampleKey] = "ExampleFile/ExampleKeySong",
         [MusicKeys.ExampleKey2] = "ExampleFile/ExampleKeySong2",
-        [MusicKeys.PlaceholderBGM] = "Sounds/Music/_investigation",
+        [MusicKeys.BGM] = "Sounds/Music/Medieval Music",
     };
 
 

@@ -7014,11 +7014,11 @@ MonoBehaviour:
   buttonB: {fileID: 1600054760}
   waveText: {fileID: 1870745942}
   enemiesRemainingText: {fileID: 454466091}
-  alliesRemainingText: {fileID: 0}
+  alliesRemainingText: {fileID: 2057620409}
   deathScreenBG: {fileID: 284507569}
   dsHeader: {fileID: 413652607}
   dsBodyText: {fileID: 1959588865}
-  scoreDisplay: {fileID: 0}
+  scoreDisplay: {fileID: 1273164209}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
