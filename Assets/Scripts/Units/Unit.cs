@@ -73,7 +73,7 @@ public class Unit : MonoBehaviour
     [SerializeField]
     private Transform wizardOrb;
 
-    private bool flipped = false; 
+    private bool flipped = false;
 
     private void Awake()
     {
@@ -99,12 +99,12 @@ public class Unit : MonoBehaviour
 
         }
 
-       
+
     }
 
     private void Update()
     {
-        
+
         if(validTargets.Count > 0)
         {
             currentTarget = validTargets[0].transform;
@@ -132,8 +132,8 @@ public class Unit : MonoBehaviour
                 {
                     flipped = false;
                     Vector2 scale = transform.localScale;
-                    scale.x *= -1f; 
-                    transform.localScale = scale; 
+                    scale.x *= -1f;
+                    transform.localScale = scale;
                 }
             }
         }
@@ -152,7 +152,7 @@ public class Unit : MonoBehaviour
 
     private void FixedUpdate()
     {
-       
+
 
 
         if (isAlly)
@@ -167,18 +167,18 @@ public class Unit : MonoBehaviour
                 if (unitType == UnitType.Catapult || unitType == UnitType.Archer || unitType == UnitType.Wizard)
                 {
                     rb.linearVelocity = Vector2.zero;
-                    
-                } 
+
+                }
                 else
                 {
                     rb.linearVelocity = (currentTarget.position - transform.position) * moveSpeed * Time.deltaTime * 5f;
-                   
+
                 }
             }
             else
             {
                 rb.linearVelocity = (KingController.Instance.kingPosition - (Vector2)transform.position) * moveSpeed * Time.deltaTime * 5f;
-             
+
             }
         }
 
@@ -206,11 +206,11 @@ public class Unit : MonoBehaviour
             }
 
         }
-        else 
+        else
         {
-          
+
                 rb.linearVelocity = (KingController.Instance.kingPosition + positionOffset - (Vector2)transform.position) * moveSpeed * 5.5f;
-           
+
         }
 
 
@@ -223,7 +223,7 @@ public class Unit : MonoBehaviour
         switch (unitType)
         {
             case UnitType.Archer:
-                
+
                 StartCoroutine(ShootArrow());
                 break;
 
@@ -265,10 +265,11 @@ public class Unit : MonoBehaviour
     public void TakeDamage(float damage)
     {
         currentHealth -= damage;
+        DamageNumberController.Instance.SpawnDamage(damage, transform.position);
         SoundManager.Instance.PlaySFX(SFXKeys.UnitHurt, 1.5f);
         if (simpleFlash)
             simpleFlash.Flash();
-        
+
         if (currentHealth <= 0)
         {
             Die();
@@ -282,8 +283,8 @@ public class Unit : MonoBehaviour
         yield return new WaitForSeconds(attackCooldown);
         if(UnitType == UnitType.Archer)
         {
-           
-            projectileObject.gameObject.SetActive(true); 
+
+            projectileObject.gameObject.SetActive(true);
         }
         attackReady = true;
     }
@@ -358,10 +359,10 @@ public class Unit : MonoBehaviour
 
             if (isAlly)
             {
-                
+
                 if (collision.transform == currentTarget)
                 {
-                    
+
                     currentTarget.GetComponent<Unit>().TakeDamage(attackDamage);
                     attackReady = false;
                     StartCoroutine(StartAttackCooldown());
@@ -369,10 +370,10 @@ public class Unit : MonoBehaviour
                     {
                         anim.SetTrigger("Attacking");
                     }
-                } 
+                }
                 else if(collision.transform.tag == "EnemyUnit")
                 {
-                    currentTarget = collision.transform; 
+                    currentTarget = collision.transform;
                     currentTarget.transform.GetComponent<Unit>().TakeDamage(attackDamage);
                     attackReady = false;
                     StartCoroutine(StartAttackCooldown());
@@ -389,7 +390,7 @@ public class Unit : MonoBehaviour
                     if(collision.transform.tag == "King")
                     {
 
-                        
+
                         KingController.Instance.TakeDamage(attackDamage);
 
                     }
@@ -400,9 +401,9 @@ public class Unit : MonoBehaviour
                             
                             if(currentTarget == null || currentTarget.tag != "King")
                             {
-                                currentTarget = collision.transform; 
+                                currentTarget = collision.transform;
                             }
-                            
+
                             collision.transform.GetComponent<Unit>().TakeDamage(attackDamage);
                         }
                         else
@@ -419,7 +420,7 @@ public class Unit : MonoBehaviour
                     }
                 }
             }
-          
+
         }
     }
 
@@ -481,13 +482,13 @@ public class Unit : MonoBehaviour
         }
     }
 
-    
+
     public void SetTraitor()
     {
         baseAttackDamage /= 10;
         baseMaximumHealth /= 2;
-        currentHealth = baseMaximumHealth; 
-        
+        currentHealth = baseMaximumHealth;
+
     }
 
     private IEnumerator ShootArrow()
@@ -501,7 +502,7 @@ public class Unit : MonoBehaviour
         projectileObject.gameObject.SetActive(false);
         while(elapsedTime < 0.1f)
         {
-            elapsedTime += Time.deltaTime; 
+            elapsedTime += Time.deltaTime;
             newProjectile.transform.position = Vector2.Lerp(ogPos, target, elapsedTime/0.25f);
             yield return new WaitForEndOfFrame();
         }
@@ -518,9 +519,9 @@ public class Unit : MonoBehaviour
             }
         }
         projectileObject.gameObject.SetActive(true);
-       
 
-        
+
+
     }
 
 

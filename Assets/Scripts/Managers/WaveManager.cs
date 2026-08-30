@@ -262,14 +262,14 @@ public class WaveManager : MonoBehaviour
         {
             if (item.Key == UnitType.Farmer && currentWave >= 10)
             {
-                continue; 
+                continue;
             }
             if (unitGarrisonValue[item.Key] <= garrisonValue)
             {
                 validUnits.Add(item.Key);
             }
 
-            
+
         }
         validUnits = shuffle(validUnits); 
 

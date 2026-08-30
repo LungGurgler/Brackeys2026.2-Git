@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
+using BarthaSzabolcs.Tutorial_SpriteFlash;
 using UnityEngine.UI;
 
 public class KingController : MonoBehaviour
@@ -13,7 +14,7 @@ public class KingController : MonoBehaviour
     public Rigidbody2D rb;
 
     [SerializeField] private float maxHealth;
-    private float currentHealth; 
+    private float currentHealth;
 
     [SerializeField] private float moveSpeed = 7.5f;
 
@@ -21,8 +22,10 @@ public class KingController : MonoBehaviour
 
     [SerializeField] private Image healthBar;
 
-    private Vector2 screenBounds; 
+    private Vector2 screenBounds;
 
+    [Header("Unit Effects")]
+    [SerializeField] private SimpleFlash simpleFlash;
 
     private void Awake()
     {
@@ -32,7 +35,7 @@ public class KingController : MonoBehaviour
         }
         else
         {
-            Instance = this; 
+            Instance = this;
         }
 
         initPlayer();
@@ -40,12 +43,11 @@ public class KingController : MonoBehaviour
 
     private void Start()
     {
-        rb = gameObject.GetComponent<Rigidbody2D>();   
+        rb = gameObject.GetComponent<Rigidbody2D>();
     }
 
     private void Update()
     {
-     
         Vector2 move = Vector2.zero;
 
         move.x = Input.GetAxisRaw("Horizontal");
@@ -56,9 +58,9 @@ public class KingController : MonoBehaviour
         float clampedX = Mathf.Clamp(transform.position.x, -8.75f * scale, 8.75f * scale);
         float clampedY = Mathf.Clamp(transform.position.y, -5f * scale, 5f * scale);
 
-        transform.position = new Vector2(clampedX, clampedY); 
-        
-       
+        transform.position = new Vector2(clampedX, clampedY);
+
+
     }
 
     public void TakeDamage(float damage)
@@ -67,9 +69,12 @@ public class KingController : MonoBehaviour
         {
             StartCoroutine(changeHealth(currentHealth, currentHealth - damage));
             currentHealth -= damage;
+            SoundManager.Instance.PlaySFX(SFXKeys.UnitHurt, 1.5f);
             kingHurt.Invoke();
-            
-            //StartCoroutine(StartCameraShake()); 
+            if (simpleFlash)
+                simpleFlash.Flash();
+
+            //StartCoroutine(StartCameraShake());
             currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
             if (currentHealth <= 0)
             {
@@ -80,34 +85,34 @@ public class KingController : MonoBehaviour
 
     private IEnumerator changeHealth(float oldHealth, float newHealth)
     {
-        
+
         while (healthBar.fillAmount != newHealth/maxHealth)
         {
             healthBar.fillAmount = Mathf.Lerp(oldHealth/maxHealth,newHealth/maxHealth,Time.unscaledDeltaTime);
-           
+
             yield return new WaitForEndOfFrame();
         }
 
     }
 
-    
+
     void initPlayer()
     {
-        currentHealth = maxHealth; 
+        currentHealth = maxHealth;
     }
 
     private IEnumerator StartCameraShake()
     {
         Camera cam = Camera.main;
         Vector2 pos = cam.transform.position;
-        float elapsedTime = 0f; 
+        float elapsedTime = 0f;
         while(elapsedTime < 0.25)
         {
             elapsedTime += Time.deltaTime;
-            cam.transform.position = pos + Random.insideUnitCircle * 0.15f; 
+            cam.transform.position = pos + Random.insideUnitCircle * 0.15f;
             yield return new WaitForEndOfFrame();
         }
-        cam.transform.position = pos; 
+        cam.transform.position = pos;
     }
 
 
